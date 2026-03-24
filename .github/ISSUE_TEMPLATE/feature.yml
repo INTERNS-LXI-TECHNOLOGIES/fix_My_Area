@@ -1,0 +1,36 @@
+name: ✨ Feature Request
+description: Suggest a new feature for Fix My Area
+title: "[FEATURE]: "
+labels: ["feature"]
+
+body:
+  - type: input
+    id: feature_name
+    attributes:
+      label: 🚀 Feature Name
+      placeholder: Enter feature name
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📄 Description
+      placeholder: Describe the feature clearly
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefit
+    attributes:
+      label: 💡 Benefit
+      placeholder: Why is this feature useful?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🔥 Priority
+      options:
+        - Low
+        - Medium
+        - High
