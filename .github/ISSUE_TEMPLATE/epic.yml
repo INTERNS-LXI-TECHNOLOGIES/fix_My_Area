@@ -1,0 +1,27 @@
+name: 🚀 Epic
+description: Large initiative or major feature group
+title: "[EPIC]: "
+labels: ["epic"]
+
+body:
+  - type: input
+    id: goal
+    attributes:
+      label: 🎯 Goal
+      placeholder: What is the main objective?
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📄 Description
+      placeholder: Describe the epic in detail
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: ✅ Tasks / Sub-features
+      placeholder: List tasks under this epic
