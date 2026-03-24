@@ -1,11 +1,15 @@
 package com.diviso.fixMyArea.model;
 
 import java.security.Identity;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class UserProfile{
@@ -17,10 +21,18 @@ private long id;
 private String name;
 private String profilePicture;
 private String email;
+@OneToOne
+@JoinColumn(name = "state_id")
 private State state;
-private District distric;
-private Punchyath myPachayth;
-private Complaint myComplaint;
+
+@OneToOne
+@JoinColumn(name = "district_id")
+private District district;
+@OneToOne
+@JoinColumn(name = "punchayth_id")
+private Punchyath myPanchayath;
+@OneToMany(mappedBy = "userProfile")
+private List<Complaint> myComplaint;
 
 
 public UserProfile(){
@@ -29,7 +41,14 @@ public UserProfile(){
 
 
 public UserProfile(String name,String profilePicture,String email,State state,
-    District district,Punchayath myPachayth,Complaint myComplaint){
+    District district,Punchyath myPanchayth,List<Complaint> myComplaint){
+        this.name = name;
+        this.profilePicture =profilePicture;
+        this.email = email;
+        this.state = state ;
+        this.district = district;
+        this. myPanchayath = myPanchayth;
+        this.myComplaint = myComplaint;
 
 }
 
@@ -41,8 +60,8 @@ public UserProfile(String name,String profilePicture,String email,State state,
     public String getEmail() { return email; }
     public State getState() { return state; }
     public District getDistrict() { return district; }
-    public Panchayath getMyPanchayath() { return myPanchayath; }
-    public Complaint getMyComplaint() { return myComplaint; }
+    public Punchyath getMyPanchayath() { return myPanchayath; }
+    public List<Complaint> getMyComplaint() { return myComplaint; }
 
  
     public void setId(long id) { this.id = id; }
@@ -51,13 +70,14 @@ public UserProfile(String name,String profilePicture,String email,State state,
     public void setEmail(String email) { this.email = email; }
     public void setState(State state) { this.state = state; }
     public void setDistrict(District district) { this.district = district; }
-    public void setMyPanchayath(Panchayath myPanchayath) { this.myPanchayath = myPanchayath; }
-    public void setMyComplaint(Complaint myComplaint) { this.myComplaint = myComplaint; }
+    public void setMyPanchayath(Punchyath myPanchayath) { this.myPanchayath = myPanchayath; }
+    public void setMyComplaint(List<Complaint> myComplaint) { this.myComplaint = myComplaint; }
 
 
     @Override
-public String toString() {
-    return "UserProfile [" +
+    public String toString() {
+
+           return "UserProfile [" +
            "id=" + id + 
            ", name='" + name + '\'' + 
            ", profilePicture='" + profilePicture + '\'' + 
