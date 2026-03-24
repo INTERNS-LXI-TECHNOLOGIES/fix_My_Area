@@ -1,0 +1,19 @@
+name: 📘 User Story
+description: User story for development (BDD style)
+title: "[STORY]: "
+labels: ["story"]
+
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: 🧠 User Story
+      placeholder: As a user, I want to..., so that...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: ✅ Acceptance Criteria
+      placeholder: Define conditions for success
