@@ -3,6 +3,12 @@ package com.diviso.fixMyArea.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
 import jakarta.persistence.Entity;
 
 @Entity
@@ -12,16 +18,21 @@ public class State{
 
 private long id;    
 private String name;
+@OneToMany(mappedBy = "state")  // many districts belong to one state 
 
+
+private List<District> districts;
 
 
 public State(){
 
 }
 
-public State(String name ){
+public State(String name ,List<District> districts){
 
     this.name=name;
+    this.districts = districts;
+
 }
 
     
@@ -40,6 +51,14 @@ public State(String name ){
 
 public void setId(long id) {
     this.id = id;
+}
+
+public List<District> getDistricts() {
+    return districts;
+}
+
+public void setDistricts(List<District> districts) {
+    this.districts = districts;
 }
 
     

@@ -19,9 +19,8 @@ private UserProfileService userProfileService;
 
 @PostMapping("/addUserProfile")
 public void addUserProfile(@RequestBody UserProfile userProfile){
-
-userProfileService.save(userProfile);
-
+    
+  userProfileService.save(userProfile);
 
 }
 
