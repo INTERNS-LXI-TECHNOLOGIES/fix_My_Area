@@ -14,24 +14,40 @@ public class Complaint{
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long id;
 
-private  ComplaintType complaintType;
+
 @ManyToOne
 @JoinColumn(name = "userProfile_Id")
 private UserProfile userProfile;
 
 private String complaint;
 
+private String image;
+
+private long vote;
+
 public Complaint(){
-    
+
 }
 
-public Complaint(UserProfile userProfile,ComplaintType complaintType,String complaint){
+public Complaint(UserProfile userProfile,String complaint,
+                  String image,long vote){
 
 this.userProfile = userProfile;
-this.complaintType = complaintType;
+
 this.complaint = complaint;
+this.image = image;
+this.vote = vote;
+
+}
 
 
+public String getImage() {
+    return image;
+}
+
+
+public void setImage(String image) {
+    this.image = image;
 }
 
 public long getId() {
@@ -42,13 +58,7 @@ public long getId() {
         this.id = id;
     }
 
-    public ComplaintType getComplaintType() {
-        return complaintType;
-    }
 
-    public void setComplaintType(ComplaintType complaintType) {
-        this.complaintType = complaintType;
-    }
 
     public String getComplaint() {
         return complaint;
@@ -66,6 +76,13 @@ public long getId() {
         this.userProfile = userProfile;
     }
 
+public long getVote() {
+    return vote;
+}
 
+
+public void setVote(long vote) {
+    this.vote = vote;
+}
 
 }

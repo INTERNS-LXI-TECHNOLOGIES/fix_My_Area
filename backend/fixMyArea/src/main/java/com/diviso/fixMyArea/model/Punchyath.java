@@ -19,6 +19,7 @@ private String name;
 public Punchyath (String name ){
 
     this.name=name;
+    
 }
 
     
