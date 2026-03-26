@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.StatusLog;
-import com.diviso.fixMyArea.services.StatusLogService;
+import com.diviso.fixMyArea.entities.Category;
+import com.diviso.fixMyArea.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/status-logs")
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
-public class StatusLogController {
+public class CategoryController {
 
-    private final StatusLogService service;
+    private final CategoryService service;
 
     @GetMapping
-    public List<StatusLog> getAll() {
+    public List<Category> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StatusLog> getById(@PathVariable Long id) {
+    public ResponseEntity<Category> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public StatusLog create(@RequestBody StatusLog entity) {
+    public Category create(@RequestBody Category entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StatusLog> update(@PathVariable Long id, @RequestBody StatusLog entity) {
+    public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);

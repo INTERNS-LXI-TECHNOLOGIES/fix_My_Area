@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.User;
-import com.diviso.fixMyArea.services.UserService;
+import com.diviso.fixMyArea.entities.Panchayath;
+import com.diviso.fixMyArea.services.PanchayathService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/panchayaths")
 @RequiredArgsConstructor
-public class UserController {
+public class PanchayathController {
 
-    private final UserService service;
+    private final PanchayathService service;
 
     @GetMapping
-    public List<User> getAll() {
+    public List<Panchayath> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    public ResponseEntity<Panchayath> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public User create(@RequestBody User entity) {
+    public Panchayath create(@RequestBody Panchayath entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User entity) {
+    public ResponseEntity<Panchayath> update(@PathVariable Long id, @RequestBody Panchayath entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);

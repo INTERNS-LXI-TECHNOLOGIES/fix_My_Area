@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.Ward;
-import com.diviso.fixMyArea.services.WardService;
+import com.diviso.fixMyArea.entities.District;
+import com.diviso.fixMyArea.services.DistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/wards")
+@RequestMapping("/api/districts")
 @RequiredArgsConstructor
-public class WardController {
+public class DistrictController {
 
-    private final WardService service;
+    private final DistrictService service;
 
     @GetMapping
-    public List<Ward> getAll() {
+    public List<District> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ward> getById(@PathVariable Long id) {
+    public ResponseEntity<District> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Ward create(@RequestBody Ward entity) {
+    public District create(@RequestBody District entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ward> update(@PathVariable Long id, @RequestBody Ward entity) {
+    public ResponseEntity<District> update(@PathVariable Long id, @RequestBody District entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);

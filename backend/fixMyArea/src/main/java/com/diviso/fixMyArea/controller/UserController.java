@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.Category;
-import com.diviso.fixMyArea.services.CategoryService;
+import com.diviso.fixMyArea.entities.User;
+import com.diviso.fixMyArea.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class CategoryController {
+public class UserController {
 
-    private final CategoryService service;
+    private final UserService service;
 
     @GetMapping
-    public List<Category> getAll() {
+    public List<User> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getById(@PathVariable Long id) {
+    public ResponseEntity<User> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Category create(@RequestBody Category entity) {
+    public User create(@RequestBody User entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category entity) {
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);

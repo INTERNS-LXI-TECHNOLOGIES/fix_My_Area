@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.Report;
-import com.diviso.fixMyArea.services.ReportService;
+import com.diviso.fixMyArea.entities.State;
+import com.diviso.fixMyArea.services.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/api/states")
 @RequiredArgsConstructor
-public class ReportController {
+public class StateController {
 
-    private final ReportService service;
+    private final StateService service;
 
     @GetMapping
-    public List<Report> getAll() {
+    public List<State> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Report> getById(@PathVariable Long id) {
+    public ResponseEntity<State> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Report create(@RequestBody Report entity) {
+    public State create(@RequestBody State entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Report> update(@PathVariable Long id, @RequestBody Report entity) {
+    public ResponseEntity<State> update(@PathVariable Long id, @RequestBody State entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);

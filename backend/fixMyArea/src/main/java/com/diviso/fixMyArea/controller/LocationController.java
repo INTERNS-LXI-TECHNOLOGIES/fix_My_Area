@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.Representative;
-import com.diviso.fixMyArea.services.RepresentativeService;
+import com.diviso.fixMyArea.entities.Location;
+import com.diviso.fixMyArea.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/representatives")
+@RequestMapping("/api/locations")
 @RequiredArgsConstructor
-public class RepresentativeController {
+public class LocationController {
 
-    private final RepresentativeService service;
+    private final LocationService service;
 
     @GetMapping
-    public List<Representative> getAll() {
+    public List<Location> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Representative> getById(@PathVariable Long id) {
+    public ResponseEntity<Location> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Representative create(@RequestBody Representative entity) {
+    public Location create(@RequestBody Location entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Representative> update(@PathVariable Long id, @RequestBody Representative entity) {
+    public ResponseEntity<Location> update(@PathVariable Long id, @RequestBody Location entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);

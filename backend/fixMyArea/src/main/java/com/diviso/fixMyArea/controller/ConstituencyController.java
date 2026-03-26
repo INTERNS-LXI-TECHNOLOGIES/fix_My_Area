@@ -1,9 +1,9 @@
-package com.diviso.fixMyArea.controllers;
+package com.diviso.fixMyArea.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import com.diviso.fixMyArea.entities.State;
-import com.diviso.fixMyArea.services.StateService;
+import com.diviso.fixMyArea.entities.Constituency;
+import com.diviso.fixMyArea.services.ConstituencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/states")
+@RequestMapping("/api/constituencies")
 @RequiredArgsConstructor
-public class StateController {
+public class ConstituencyController {
 
-    private final StateService service;
+    private final ConstituencyService service;
 
     @GetMapping
-    public List<State> getAll() {
+    public List<Constituency> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<State> getById(@PathVariable Long id) {
+    public ResponseEntity<Constituency> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public State create(@RequestBody State entity) {
+    public Constituency create(@RequestBody Constituency entity) {
         return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<State> update(@PathVariable Long id, @RequestBody State entity) {
+    public ResponseEntity<Constituency> update(@PathVariable Long id, @RequestBody Constituency entity) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);
