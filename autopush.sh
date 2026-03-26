@@ -4,9 +4,9 @@ echo "Saving changes..."
 
 git add .
 
-git commit -m "daily update $(date)"
+git commit -m "feat: add homepage dashboard and login page with initial styling"
 
-git push origin main
+git push origin feature/diviso-fix_my_area-2026
  
 
 
