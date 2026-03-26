@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>FixMyArea</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:       #050811;
+  --surface:  #0C1220;
+  --surface2: #111827;
+  --border:   rgba(0,240,255,0.10);
+  --border2:  rgba(0,240,255,0.06);
+  --text:     #E8F4FF;
+  --text2:    #7B91B0;
+  --text3:    #3D5066;
+
+  /* neon palette */
+  --cyan:     #00F0FF;
+  --cyan-s:   rgba(0,240,255,0.08);
+  --cyan-m:   rgba(0,240,255,0.16);
+  --cyan-glow:0 0 16px rgba(0,240,255,0.5);
+
+  --violet:   #BF5FFF;
+  --violet-s: rgba(191,95,255,0.10);
+  --violet-glow:0 0 16px rgba(191,95,255,0.5);
+
+  --green:    #00FF85;
+  --green-s:  rgba(0,255,133,0.08);
+  --green-glow:0 0 14px rgba(0,255,133,0.45);
+
+  --amber:    #FFB800;
+  --amber-s:  rgba(255,184,0,0.08);
+  --amber-glow:0 0 14px rgba(255,184,0,0.4);
+
+  --red:      #FF3E6C;
+  --red-s:    rgba(255,62,108,0.08);
+  --red-glow: 0 0 14px rgba(255,62,108,0.45);
+
+  --r:        18px;
+  --r2:       22px;
+  --head:     'Outfit', sans-serif;
+  --body:     'DM Sans', sans-serif;
+  --shadow:   0 4px 24px rgba(0,0,0,0.5);
+  --shadow2:  0 8px 40px rgba(0,0,0,0.7);
+}
+
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--text);
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  padding-bottom:72px;
+  position:relative;
+}
+
+/* ── Atmospheric dark background ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% 0%, rgba(0,240,255,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 35% at 85% 100%, rgba(191,95,255,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 30% at 50% 50%, rgba(0,255,133,0.03) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Scanline grid ── */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(0,240,255,0.03) 1px, transparent 1px);
+  background-size:28px 28px;
+  pointer-events:none;z-index:0;
+}
+
+.app{position:relative;z-index:1;}
+
+/* ════ TOPBAR ════ */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,8,17,0.88);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:0 18px;
+  height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,#00F0FF,#BF5FFF);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px rgba(0,240,255,0.5), 0 0 32px rgba(191,95,255,0.3);
+}
+.brand-mark svg{width:17px;height:17px;fill:none;stroke:#050811;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.brand-name{font-family:var(--head);font-size:19px;font-weight:700;letter-spacing:-0.3px;color:var(--text);}
+.brand-name em{
+  font-style:normal;
+  background:linear-gradient(90deg,#00F0FF,#BF5FFF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.top-right{display:flex;align-items:center;gap:7px;}
+.icon-pill{
+  width:36px;height:36px;border-radius:11px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;position:relative;
+  box-shadow:inset 0 1px 0 rgba(0,240,255,0.06);
+}
+.icon-pill:hover{
+  border-color:var(--cyan);
+  box-shadow:var(--cyan-glow),inset 0 1px 0 rgba(0,240,255,0.1);
+  transform:scale(1.07);
+}
+.icon-pill svg{width:17px;height:17px;stroke:var(--text2);fill:none;stroke-width:1.8;transition:stroke .18s;}
+.icon-pill:hover svg{stroke:var(--cyan);}
+
+.notif-dot{
+  position:absolute;top:8px;right:8px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 8px var(--red);
+  border:1.5px solid var(--bg);
+}
+.avatar-pill{
+  width:34px;height:34px;border-radius:11px;
+  background:linear-gradient(135deg,#00F0FF,#BF5FFF);
+  display:flex;align-items:center;justify-content:center;
+  color:#050811;font-family:var(--head);font-size:11px;font-weight:800;
+  cursor:pointer;
+  box-shadow:0 0 14px rgba(0,240,255,0.4);
+}
+
+/* ════ STAT RINGS ════ */
+.rings-wrap{
+  padding:18px 18px 8px;
+  display:flex;gap:14px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.rings-wrap::-webkit-scrollbar{display:none;}
+
+.ring-item{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex-shrink:0;cursor:pointer;
+  transition:transform .2s;
+}
+.ring-item:hover{transform:translateY(-2px);}
+
+.ring-outer{
+  width:64px;height:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  padding:2px;position:relative;
+}
+.ring-outer.all{
+  background:conic-gradient(#00F0FF 0%,#BF5FFF 100%);
+  box-shadow:0 0 18px rgba(0,240,255,0.35);
+}
+.ring-outer.pending{
+  background:conic-gradient(#FFB800 33%,#1a2235 33%);
+  box-shadow:0 0 14px rgba(255,184,0,0.25);
+}
+.ring-outer.resolved{
+  background:conic-gradient(#00FF85 55%,#1a2235 55%);
+  box-shadow:0 0 14px rgba(0,255,133,0.25);
+}
+.ring-outer.escalated{
+  background:conic-gradient(#FF3E6C 12%,#1a2235 12%);
+  box-shadow:0 0 14px rgba(255,62,108,0.25);
+}
+.ring-outer.new-post{
+  background:var(--surface);
+  border:2px dashed var(--border);
+}
+
+.ring-inner{
+  width:100%;height:100%;border-radius:50%;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;border:2.5px solid var(--bg);
+}
+.ring-outer.new-post .ring-inner{border:none;background:var(--surface);}
+.ring-num{font-family:var(--head);font-size:15px;font-weight:700;line-height:1;color:var(--text);}
+.ring-unit{font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.5px;}
+.ring-label{font-size:11px;color:var(--text2);font-weight:500;text-align:center;}
+.ring-add{font-size:24px;color:var(--text3);line-height:1;}
+
+/* ════ SEARCH BAR ════ */
+.search-wrap{padding:4px 18px 14px;}
+.search-bar{
+  display:flex;align-items:center;gap:9px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px 14px;
+  box-shadow:var(--shadow);
+  transition:border-color .18s,box-shadow .18s;
+}
+.search-bar:focus-within{
+  border-color:var(--cyan);
+  box-shadow:var(--cyan-glow);
+}
+.search-bar svg{width:15px;height:15px;stroke:var(--text3);fill:none;flex-shrink:0;transition:stroke .18s;}
+.search-bar:focus-within svg{stroke:var(--cyan);}
+.search-bar input{
+  flex:1;border:none;background:transparent;outline:none;
+  font-family:var(--body);font-size:14px;color:var(--text);
+}
+.search-bar input::placeholder{color:var(--text3);}
+.search-filter{
+  font-size:11px;font-weight:700;color:var(--cyan);
+  padding:3px 9px;border-radius:8px;
+  background:var(--cyan-s);
+  border:1px solid rgba(0,240,255,0.15);
+  cursor:pointer;white-space:nowrap;
+  letter-spacing:.3px;
+}
+
+/* ════ CHIPS ════ */
+.chips-wrap{
+  padding:0 18px 14px;
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+}
+.chips-wrap::-webkit-scrollbar{display:none;}
+.chip{
+  padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--text2);cursor:pointer;white-space:nowrap;
+  transition:all .15s;flex-shrink:0;
+  display:flex;align-items:center;gap:5px;
+}
+.chip:hover{border-color:var(--cyan);color:var(--cyan);}
+.chip.active{
+  background:var(--cyan-s);color:var(--cyan);
+  border-color:var(--cyan);
+  box-shadow:0 0 12px rgba(0,240,255,0.2);
+}
+.chip-dot{width:6px;height:6px;border-radius:50%;}
+
+/* ════ SECTION LABEL ════ */
+.section-label{
+  padding:0 18px 10px;
+  font-family:var(--head);font-size:11px;font-weight:700;
+  color:var(--text3);letter-spacing:1.4px;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.section-label a{
+  font-family:var(--body);text-transform:none;letter-spacing:0;
+  font-size:12px;color:var(--cyan);font-weight:600;cursor:pointer;
+}
+
+/* ════ FEED CARDS ════ */
+.feed{display:flex;flex-direction:column;gap:10px;padding:0 12px;}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:var(--r2);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  animation:up .35s ease both;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  position:relative;
+}
+.card:nth-child(1){animation-delay:.04s}
+.card:nth-child(2){animation-delay:.09s}
+.card:nth-child(3){animation-delay:.14s}
+.card:nth-child(4){animation-delay:.19s}
+.card:nth-child(5){animation-delay:.24s}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card:hover{transform:translateY(-3px);}
+.card.pending:hover  {border-color:rgba(255,184,0,0.3); box-shadow:var(--shadow2),0 0 20px rgba(255,184,0,0.1);}
+.card.resolved:hover {border-color:rgba(0,255,133,0.3); box-shadow:var(--shadow2),0 0 20px rgba(0,255,133,0.08);}
+.card.escalated:hover{border-color:rgba(255,62,108,0.3); box-shadow:var(--shadow2),0 0 20px rgba(255,62,108,0.1);}
+.card.assigned:hover {border-color:rgba(0,240,255,0.3); box-shadow:var(--shadow2),0 0 20px rgba(0,240,255,0.08);}
+
+/* Neon left accent stripe */
+.card::before{
+  content:'';position:absolute;left:0;top:12px;bottom:12px;
+  width:3px;border-radius:0 3px 3px 0;
+}
+.card.pending::before  {background:var(--amber); box-shadow:var(--amber-glow);}
+.card.resolved::before {background:var(--green);  box-shadow:var(--green-glow);}
+.card.escalated::before{background:var(--red);    box-shadow:var(--red-glow);}
+.card.assigned::before {background:var(--cyan);   box-shadow:var(--cyan-glow);}
+
+/* Card header */
+.card-head{
+  display:flex;align-items:center;gap:10px;
+  padding:13px 14px 10px 18px;
+}
+.card-avatar{
+  width:38px;height:38px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--head);font-size:12px;font-weight:800;color:#050811;
+  position:relative;
+}
+.card-avatar.road  {background:linear-gradient(135deg,#00F0FF,#0080FF);box-shadow:0 0 12px rgba(0,240,255,0.4);}
+.card-avatar.water {background:linear-gradient(135deg,#00C9FF,#00F0FF);box-shadow:0 0 12px rgba(0,200,255,0.3);}
+.card-avatar.sanit {background:linear-gradient(135deg,#00FF85,#00C9A7);box-shadow:0 0 12px rgba(0,255,133,0.35);}
+.card-avatar.infra {background:linear-gradient(135deg,#FFB800,#FF7300);box-shadow:0 0 12px rgba(255,184,0,0.35);}
+.card-avatar.land  {background:linear-gradient(135deg,#FF3E6C,#BF5FFF);box-shadow:0 0 12px rgba(255,62,108,0.35);}
+
+.card-info{flex:1;min-width:0;}
+.card-id{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.6px;}
+.card-title{
+  font-size:13.5px;font-weight:600;color:var(--text);margin-top:2px;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card-loc{font-size:11px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:3px;}
+.card-loc svg{width:10px;height:10px;stroke:currentColor;fill:none;flex-shrink:0;}
+
+/* Status badges */
+.badge{
+  font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:7px;
+  white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0;
+  letter-spacing:.3px;border:1px solid transparent;
+}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;}
+.badge.pending  {background:rgba(255,184,0,0.1); color:var(--amber); border-color:rgba(255,184,0,0.2);}
+.badge.pending::before{background:var(--amber); box-shadow:0 0 6px var(--amber);}
+.badge.resolved {background:rgba(0,255,133,0.08);color:var(--green); border-color:rgba(0,255,133,0.18);}
+.badge.resolved::before{background:var(--green); box-shadow:0 0 6px var(--green);}
+.badge.escalated{background:rgba(255,62,108,0.1);color:var(--red);   border-color:rgba(255,62,108,0.2);}
+.badge.escalated::before{background:var(--red); box-shadow:0 0 6px var(--red);}
+.badge.assigned {background:rgba(0,240,255,0.08);color:var(--cyan);  border-color:rgba(0,240,255,0.18);}
+.badge.assigned::before{background:var(--cyan); box-shadow:0 0 6px var(--cyan);}
+
+/* Card visual band */
+.card-visual{
+  margin:0 14px 0 18px;
+  border-radius:12px;overflow:hidden;
+  height:88px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border2);
+}
+.card-visual.road  {background:linear-gradient(110deg,rgba(0,240,255,0.08),rgba(0,128,255,0.12));}
+.card-visual.water {background:linear-gradient(110deg,rgba(0,200,255,0.08),rgba(0,240,255,0.14));}
+.card-visual.sanit {background:linear-gradient(110deg,rgba(0,255,133,0.07),rgba(0,200,167,0.12));}
+.card-visual.infra {background:linear-gradient(110deg,rgba(255,184,0,0.09),rgba(255,115,0,0.12));}
+.card-visual.land  {background:linear-gradient(110deg,rgba(255,62,108,0.08),rgba(191,95,255,0.10));}
+
+.card-visual-emoji{font-size:40px;position:relative;z-index:2;filter:drop-shadow(0 0 12px rgba(0,240,255,0.3));}
+.card-visual-bg{
+  position:absolute;right:-6px;bottom:-6px;
+  font-size:70px;opacity:0.07;
+  user-select:none;pointer-events:none;
+}
+.card-visual-tag{
+  position:absolute;top:9px;left:11px;
+  font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;
+  background:rgba(5,8,17,0.75);backdrop-filter:blur(8px);
+  color:var(--text2);letter-spacing:.4px;
+  border:1px solid var(--border);
+}
+.priority-tag{
+  position:absolute;top:9px;right:11px;
+  font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;
+  backdrop-filter:blur(8px);
+  border:1px solid transparent;
+}
+.priority-tag.H{background:rgba(255,62,108,0.15); color:var(--red);   border-color:rgba(255,62,108,0.25); text-shadow:0 0 8px var(--red);}
+.priority-tag.M{background:rgba(255,184,0,0.12);  color:var(--amber); border-color:rgba(255,184,0,0.22);  text-shadow:0 0 8px var(--amber);}
+.priority-tag.L{background:rgba(0,255,133,0.10);  color:var(--green); border-color:rgba(0,255,133,0.20);  text-shadow:0 0 8px var(--green);}
+
+/* Card desc */
+.card-desc{
+  font-size:12.5px;color:var(--text2);line-height:1.55;
+  padding:9px 14px 9px 18px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* Card actions */
+.card-actions{
+  display:flex;align-items:center;
+  padding:8px 14px 12px 18px;
+  border-top:1px solid var(--border2);
+  gap:0;
+}
+.act{
+  display:flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:500;color:var(--text3);
+  cursor:pointer;padding:4px 10px 4px 0;
+  transition:color .15s;
+  border:none;background:none;font-family:var(--body);
+}
+.act:hover{color:var(--text);}
+.act.upvote:hover{color:var(--cyan);}
+.act.upvote.active{color:var(--cyan); text-shadow:0 0 10px var(--cyan);}
+.act svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+.act.upvote.active svg{fill:var(--cyan);stroke:var(--cyan);filter:drop-shadow(0 0 4px var(--cyan));}
+.act-sep{flex:1;}
+.act.track{
+  font-size:11px;font-weight:700;
+  padding:5px 13px;border-radius:8px;
+  background:var(--cyan-s);color:var(--cyan);
+  border:1px solid rgba(0,240,255,0.2);
+  transition:all .15s;letter-spacing:.3px;
+}
+.act.track:hover{
+  background:var(--cyan-m);
+  box-shadow:0 0 12px rgba(0,240,255,0.25);
+}
+
+/* ════ BOTTOM NAV ════ */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(5,8,17,0.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  height:62px;
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 8px 6px;
+  z-index:200;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:6px 12px;border-radius:14px;
+  transition:all .15s;position:relative;
+}
+.nav-item:hover{background:var(--cyan-s);}
+.nav-item svg{width:22px;height:22px;stroke:var(--text3);fill:none;stroke-width:1.8;transition:all .15s;}
+.nav-item.active svg{stroke:var(--cyan);filter:drop-shadow(0 0 6px var(--cyan));}
+.nav-item span{font-size:9.5px;font-weight:600;color:var(--text3);transition:color .15s;letter-spacing:.2px;}
+.nav-item.active span{color:var(--cyan);}
+.nav-item .nav-badge{
+  position:absolute;top:4px;right:6px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--red);color:#fff;font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+  box-shadow:0 0 8px var(--red);
+}
+
+/* Add button */
+.nav-add{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,#00F0FF,#BF5FFF);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(0,240,255,0.5), 0 0 40px rgba(191,95,255,0.3);
+  cursor:pointer;transition:all .2s;
+  margin-bottom:4px;
+}
+.nav-add:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 28px rgba(0,240,255,0.7), 0 0 50px rgba(191,95,255,0.4);
+}
+.nav-add svg{width:22px;height:22px;stroke:#050811;fill:none;stroke-width:2.5;}
+
+/* ════ EMPTY SPACE ════ */
+.spacer{height:12px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <div class="brand-name">Fix<em>MyArea</em></div>
+  </div>
+  <div class="top-right">
+    <div class="icon-pill">
+      <!-- Unique: scan/focus icon instead of magnifier -->
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        <path d="M14 17.5h3m3 0h-3m0 0v-3m0 3v3"/>
+      </svg>
+    </div>
+    <div class="icon-pill">
+      <!-- Unique: flag/report icon instead of bell -->
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 21V4"/>
+        <path d="M4 4h11l-2 4 2 4H4"/>
+      </svg>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="avatar-pill">AD</div>
+  </div>
+</div>
+
+<!-- STAT RINGS (stories row) -->
+<div class="rings-wrap">
+
+  <div class="ring-item">
+    <div class="ring-outer new-post">
+      <div class="ring-inner">
+        <div class="ring-add">＋</div>
+      </div>
+    </div>
+    <div class="ring-label">New</div>
+  </div>
+
+  <div class="ring-item">
+    <div class="ring-outer all">
+      <div class="ring-inner">
+        <div class="ring-num">42</div>
+        <div class="ring-unit">TOTAL</div>
+      </div>
+    </div>
+    <div class="ring-label">All</div>
+  </div>
+
+  <div class="ring-item">
+    <div class="ring-outer pending">
+      <div class="ring-inner">
+        <div class="ring-num" style="color:var(--amber)">14</div>
+        <div class="ring-unit">WAIT</div>
+      </div>
+    </div>
+    <div class="ring-label">Pending</div>
+  </div>
+
+  <div class="ring-item">
+    <div class="ring-outer resolved">
+      <div class="ring-inner">
+        <div class="ring-num" style="color:var(--green)">23</div>
+        <div class="ring-unit">DONE</div>
+      </div>
+    </div>
+    <div class="ring-label">Resolved</div>
+  </div>
+
+  <div class="ring-item">
+    <div class="ring-outer escalated">
+      <div class="ring-inner">
+        <div class="ring-num" style="color:var(--red)">5</div>
+        <div class="ring-unit">FLAG</div>
+      </div>
+    </div>
+    <div class="ring-label">Escalated</div>
+  </div>
+
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-bar">
+    <!-- unique: crosshair/target icon -->
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+    <input placeholder="Search issues, wards, areas…" />
+    <div class="search-filter">Filter</div>
+  </div>
+</div>
+
+<!-- CHIPS -->
+<div class="chips-wrap">
+  <div class="chip active">All</div>
+  <div class="chip"><span class="chip-dot" style="background:var(--amber)"></span>Pending</div>
+  <div class="chip"><span class="chip-dot" style="background:var(--accent)"></span>Assigned</div>
+  <div class="chip"><span class="chip-dot" style="background:var(--green)"></span>Resolved</div>
+  <div class="chip"><span class="chip-dot" style="background:var(--red)"></span>Escalated</div>
+</div>
+
+<!-- SECTION LABEL -->
+<div class="section-label">
+  Recent Complaints
+  <a>See all →</a>
+</div>
+
+<!-- FEED -->
+<div class="feed">
+
+  <!-- CARD 1 -->
+  <div class="card pending">
+    <div class="card-head">
+      <div class="card-avatar road">RD</div>
+      <div class="card-info">
+        <div class="card-id">#1234 · Ward 3</div>
+        <div class="card-title">Broken road — main junction potholes</div>
+        <div class="card-loc">
+          <!-- pin icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a6 6 0 0 1 6 6c0 4-6 12-6 12S6 12 6 8a6 6 0 0 1 6-6z"/><circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/></svg>
+          Usarpata, Thrissur · 2d ago
+        </div>
+      </div>
+      <div class="badge pending">Pending</div>
+    </div>
+
+    <div class="card-visual road">
+      <div class="card-visual-bg">🛣️</div>
+      <div class="card-visual-emoji">🛣️</div>
+      <div class="card-visual-tag">Road Damage</div>
+      <div class="priority-tag H">● High</div>
+    </div>
+
+    <div class="card-desc">Road surface deteriorated badly after monsoon. Multiple vehicles damaged near main junction. Urgent action needed.</div>
+
+    <div class="card-actions">
+      <button class="act upvote" onclick="toggleUpvote(this,'12')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        <span>12</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>3</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <div class="act-sep"></div>
+      <button class="act track">Track →</button>
+    </div>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="card assigned">
+    <div class="card-head">
+      <div class="card-avatar water">WS</div>
+      <div class="card-info">
+        <div class="card-id">#1235 · Ward 5</div>
+        <div class="card-title">Irregular water — pipeline leakage</div>
+        <div class="card-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a6 6 0 0 1 6 6c0 4-6 12-6 12S6 12 6 8a6 6 0 0 1 6-6z"/><circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/></svg>
+          Usarpata, Thrissur · 2d ago
+        </div>
+      </div>
+      <div class="badge assigned">Assigned</div>
+    </div>
+
+    <div class="card-visual water">
+      <div class="card-visual-bg">💧</div>
+      <div class="card-visual-emoji">💧</div>
+      <div class="card-visual-tag">Water Supply</div>
+      <div class="priority-tag M">● Medium</div>
+    </div>
+
+    <div class="card-desc">No water for 3 weeks. Pipeline leakage near junction. Officer Rajan Kumar assigned — inspection in progress.</div>
+
+    <div class="card-actions">
+      <button class="act upvote active" onclick="toggleUpvote(this,'8')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        <span>8</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>1</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <div class="act-sep"></div>
+      <button class="act track">Track →</button>
+    </div>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="card escalated">
+    <div class="card-head">
+      <div class="card-avatar land">EP</div>
+      <div class="card-info">
+        <div class="card-id">#1201 · Ward 1</div>
+        <div class="card-title">Transformer failure — 300+ homes dark</div>
+        <div class="card-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a6 6 0 0 1 6 6c0 4-6 12-6 12S6 12 6 8a6 6 0 0 1 6-6z"/><circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/></svg>
+          Usarpata, Thrissur · 5d ago
+        </div>
+      </div>
+      <div class="badge escalated">Escalated</div>
+    </div>
+
+    <div class="card-visual land">
+      <div class="card-visual-bg">⚡</div>
+      <div class="card-visual-emoji">⚡</div>
+      <div class="card-visual-tag">Electricity</div>
+      <div class="priority-tag H">● High</div>
+    </div>
+
+    <div class="card-desc">Transformer blown. KSEB unresponsive for 5 days. 300+ households affected. Escalated to district collector.</div>
+
+    <div class="card-actions">
+      <button class="act upvote" onclick="toggleUpvote(this,'31')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        <span>31</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>9</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <div class="act-sep"></div>
+      <button class="act track">Track →</button>
+    </div>
+  </div>
+
+  <!-- CARD 4 -->
+  <div class="card resolved">
+    <div class="card-head">
+      <div class="card-avatar sanit">DR</div>
+      <div class="card-info">
+        <div class="card-id">#7767 · Ward 7</div>
+        <div class="card-title">Blocked drain — waterlogging fixed</div>
+        <div class="card-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a6 6 0 0 1 6 6c0 4-6 12-6 12S6 12 6 8a6 6 0 0 1 6-6z"/><circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/></svg>
+          Usarpata, Thrissur · 8d ago
+        </div>
+      </div>
+      <div class="badge resolved">Resolved</div>
+    </div>
+
+    <div class="card-visual sanit">
+      <div class="card-visual-bg">🏗️</div>
+      <div class="card-visual-emoji">🏗️</div>
+      <div class="card-visual-tag">Drainage</div>
+      <div class="priority-tag L">✓ Done</div>
+    </div>
+
+    <div class="card-desc">Drain cleared and reinforced by PWD team on 16 Apr. Waterlogging fully resolved. Residents satisfied. ✓</div>
+
+    <div class="card-actions">
+      <button class="act upvote active" onclick="toggleUpvote(this,'19')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        <span>19</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>7</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <div class="act-sep"></div>
+      <button class="act track">View →</button>
+    </div>
+  </div>
+
+  <!-- CARD 5 -->
+  <div class="card pending">
+    <div class="card-head">
+      <div class="card-avatar infra">PL</div>
+      <div class="card-info">
+        <div class="card-id">#1245 · Ward 2</div>
+        <div class="card-title">Illegal construction on panchayat land</div>
+        <div class="card-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a6 6 0 0 1 6 6c0 4-6 12-6 12S6 12 6 8a6 6 0 0 1 6-6z"/><circle cx="12" cy="8" r="2" fill="currentColor" stroke="none"/></svg>
+          Usarpata, Thrissur · 1d ago
+        </div>
+      </div>
+      <div class="badge pending">Pending</div>
+    </div>
+
+    <div class="card-visual infra">
+      <div class="card-visual-bg">🌿</div>
+      <div class="card-visual-emoji">🌿</div>
+      <div class="card-visual-tag">Public Land</div>
+      <div class="priority-tag H">● High</div>
+    </div>
+
+    <div class="card-desc">Unauthorized structure on protected panchayat land near park. Documents attached. Survey team requested urgently.</div>
+
+    <div class="card-actions">
+      <button class="act upvote" onclick="toggleUpvote(this,'5')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        <span>5</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span>2</span>
+      </button>
+      <button class="act">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <div class="act-sep"></div>
+      <button class="act track">Track →</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="spacer"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="nav-item active">
+    <!-- Unique: layered-grid/area icon for Home -->
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="8" height="8" rx="2"/>
+      <rect x="13" y="3" width="8" height="8" rx="2"/>
+      <rect x="3" y="13" width="8" height="8" rx="2"/>
+      <rect x="13" y="13" width="8" height="8" rx="2"/>
+    </svg>
+    <span>Home</span>
+  </div>
+  <div class="nav-item">
+    <!-- Unique: radar/scan icon for Search -->
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="3"/>
+      <circle cx="12" cy="12" r="7"/>
+      <path d="M12 5V3M12 21v-2M5 12H3M21 12h-2"/>
+    </svg>
+    <span>Search</span>
+  </div>
+  <div class="nav-add">
+    <!-- Unique: wrench/fix icon for New Report -->
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+    </svg>
+  </div>
+  <div class="nav-item" style="position:relative;">
+    <!-- Unique: triangle-alert for Alerts -->
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <span>Alerts</span>
+    <div class="nav-badge">3</div>
+  </div>
+  <div class="nav-item">
+    <!-- Unique: id-card/badge for Profile -->
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="5" width="20" height="14" rx="3"/>
+      <circle cx="9" cy="12" r="3"/>
+      <path d="M14 9h4M14 12h3M14 15h2"/>
+    </svg>
+    <span>Profile</span>
+  </div>
+</nav>
+
+</div>
+
+<script>
+// Upvote toggle
+function toggleUpvote(btn, base){
+  btn.classList.toggle('active');
+  const n = parseInt(base);
+  btn.querySelector('span').textContent = btn.classList.contains('active') ? n+1 : n;
+}
+
+// Chip filter
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  });
+});
+
+// Nav items
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+// Ring items — active ring
+document.querySelectorAll('.ring-item').forEach(r=>{
+  r.addEventListener('click',()=>{
+    document.querySelectorAll('.ring-item').forEach(x=>x.style.opacity='0.6');
+    r.style.opacity='1';
+  });
+});
+</script>
+</body>
+</html>
