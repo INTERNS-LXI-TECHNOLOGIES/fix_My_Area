@@ -1,0 +1,202 @@
+<html>
+<head>
+<style>
+:root {
+  --primary-green: #218c4b;
+  --light-green: #e8f5e9;
+  --primary-blue: #1a73e8;
+  --light-blue: #e3f2fd;
+  --bg-gray: #f8f9fa;
+  --border-color: #e0e0e0;
+  --text-main: #202124;
+  --text-sec: #5f6368;
+}
+
+body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+
+.card-container {
+  max-width: 400px;
+  background: white;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 16px;
+}
+
+/* Header & Badges */
+.title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.title { font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--text-main); }
+.status-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 0.75rem; }
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+}
+.badge-green { background: var(--primary-green); }
+.deadline { color: #d93025; background: #fce8e6; padding: 4px 8px; border-radius: 6px; font-weight: 600; margin-left: auto;}
+
+.tags-row { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; }
+.tag {
+  background: white;
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Map Placeholder */
+.map-container {
+  height: 120px;
+  background: #e1f5fe url('https://via.placeholder.com/400x120/d1eaff/808080?text=Map+Grid') center;
+  border-radius: 12px;
+  position: relative;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.affected-area-label { 
+
+  background: rgba(217, 48, 37, 0.2); 
+  border: 1px solid #d93025;
+  padding: 10px 30px;
+  border-radius: 8px;
+  color: #a50e0e;
+  font-weight: bold;
+
+}
+
+/* Evidence Grid */
+.section-label { font-weight: bold; margin-bottom: 8px; }
+.evidence-grid { display: flex; gap: 6px; margin-bottom: 16px; }
+.thumb { width: 85px; height: 65px; border-radius: 8px; background: #ccc; background-size: cover; position: relative; }
+.thumb.play::after { content: '▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.thumb.img-more { background: #444; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  gap: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: var(--text-sec);
+}
+.stat.active { color: var(--primary-green); font-weight: bold; border-bottom: 2px solid var(--primary-green); padding-bottom: 6px; }
+
+/* Comments */
+.comment { margin-bottom: 16px; }
+.user-info { display: flex; gap: 10px; align-items: flex-start; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: #eee; flex-shrink: 0; }
+.user-details { flex-grow: 1; font-size: 0.75rem; color: var(--text-sec); }
+.user-name { font-weight: bold; color: var(--text-main); }
+.user-badge { display: inline-block; margin-top: 4px; padding: 2px 8px; border-radius: 4px; font-weight: 800; }
+.badge-green-light { background: var(--light-green); color: var(--primary-green); }
+.badge-blue-light { background: var(--light-blue); color: var(--primary-blue); }
+.upvote { background: #f1f3f4; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; color: var(--primary-green); font-weight: bold;}
+.comment-text { margin: 6px 0 0 46px; font-size: 0.85rem; }
+
+/* Footer Actions */
+.footer-label { font-weight: bold; margin-bottom: 10px; font-size: 0.9rem; }
+.footer-actions { display: grid; grid-template-columns: 1fr 1.2fr 1.1fr; gap: 8px; }
+.btn {
+  border: none;
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-green { background: var(--primary-green); color: white; }
+.btn-outline { background: white; border: 1px solid #f0932b; color: #e67e22; }
+.btn-blue { background: var(--primary-blue); color: white; }
+
+ </style>   
+</head>    
+
+<body>
+ 
+<div class="card-container">
+  <div class="header">
+    <div class="title-row">
+      <span class="back-arrow">←</span>
+      <h2 class="title">Broken Road Near Government School</h2>
+      <span class="menu-dots">⋮</span>
+    </div>
+    
+    <div class="status-row">
+      <span class="badge badge-green">VALIDATED</span>
+      <span class="id-text">ID #IS-2024-001</span>
+      <span class="deadline">Deadline: 3 days left</span>
+    </div>
+
+    <div class="tags-row">
+      <span class="tag"><i class="icon">🚧</i> Infrastructure</span>
+      <span class="tag"><i class="icon">📍</i> Ward 12</span>
+      <span class="tag"><i class="icon">🔗</i> Open in Maps</span>
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div class="affected-area-label">Affected Area</div>
+  </div>
+
+  <div class="section-label">Evidence</div>
+  <div class="evidence-grid">
+    <div class="thumb img-1"></div>
+    <div class="thumb img-2 play"></div>
+    <div class="thumb img-3 play"></div>
+    <div class="thumb img-more">+12</div>
+  </div>
+
+  <div class="stats-bar">
+    <span class="stat active">Support 142</span>
+    <span class="stat">Concerns 32</span>
+    <span class="stat">Suggestions 18</span>
+    <span class="stat">Eviden 25</span>
+  </div>
+
+  <div class="comment">
+    <div class="user-info">
+      <div class="avatar av-1"></div>
+      <div class="user-details">
+        <span class="user-name">Ramesh Kumar</span> • <span class="user-role">Resident</span> • <span class="time">2 hrs ago</span>
+        <div class="user-badge badge-green-light">STRONG SUPPORT</div>
+      </div>
+      <div class="upvote">👍 24</div>
+    </div>
+    <p class="comment-text">This road is dangerous for kids!</p>
+  </div>
+
+  <div class="comment">
+    <div class="user-info">
+      <div class="avatar av-2"></div>
+      <div class="user-details">
+        <span class="user-name">Dr. Priya Sharma</span> • <span class="user-role">Civil Engineer</span> • <span class="time">4 hrs ago</span>
+        <div class="user-badge badge-blue-light">EXPERT INPUT</div>
+      </div>
+      <div class="upvote">👍 18</div>
+    </div>
+    <p class="comment-text">Needs immediate patchwork. Estimated cost: ₹2.5L</p>
+  </div>
+
+
+
+  <div class="footer-label">Add Your Input</div>
+  <div class="footer-actions">
+    <button class="btn btn-green">👍 Support</button>
+    <button class="btn btn-outline">⚠️ Raise Concern</button>
+    <button class="btn btn-blue">🔗 Add Evidence</button>
+  </div>
+</div>
+
+
+
+</body>
+</html>

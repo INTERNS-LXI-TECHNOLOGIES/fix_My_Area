@@ -1,13 +1,7 @@
 package com.diviso.fixMyArea.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
@@ -21,20 +15,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "address")
-    private String address;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private String role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Report> reports;
+   
+    @Column(name = "geo_home")
+    private String geoHome;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
+ 
+    @Column(name = "credibility_score")
+    private Double credibilityScore;
+
+
+    @Column(name = "verification_status")
+    private String verificationStatus;
 }
