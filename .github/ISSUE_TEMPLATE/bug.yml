@@ -1,0 +1,35 @@
+name: 🐛 Bug Report
+description: Report a bug in Fix My Area
+title: "[BUG]: "
+labels: ["bug"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐛 Bug Description
+      placeholder: What went wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔁 Steps to Reproduce
+      placeholder: Step 1, Step 2, Step 3...
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Expected Behavior
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Actual Behavior
+
+  - type: input
+    id: environment
+    attributes:
+      label: 💻 Environment
+      placeholder: OS / Browser
