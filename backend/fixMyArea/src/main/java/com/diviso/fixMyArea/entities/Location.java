@@ -46,7 +46,7 @@ public class Location {
     private Ward ward;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    private List<Report> reports;
+    private List<Issue> issues;
 
     @PrePersist
     protected void onCreate() {
