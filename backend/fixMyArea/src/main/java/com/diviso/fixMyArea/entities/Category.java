@@ -31,5 +31,5 @@ public class Category {
     private LevelType level;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Report> reports;
+    private List<Issue> issues;
 }

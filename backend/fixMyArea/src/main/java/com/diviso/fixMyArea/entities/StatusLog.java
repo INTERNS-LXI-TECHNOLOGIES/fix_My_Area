@@ -36,9 +36,9 @@ public class StatusLog {
     @Column(name = "level")
     private LevelType level;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "report_id")
-    private Report report;
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "issue_id")
+        private Issue issue;
 
     @PrePersist
     protected void onCreate() {

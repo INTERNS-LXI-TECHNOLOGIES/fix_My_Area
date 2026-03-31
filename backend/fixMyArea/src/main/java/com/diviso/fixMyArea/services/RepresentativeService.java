@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.diviso.fixMyArea.entities.Representative;
 import com.diviso.fixMyArea.repository.RepresentativeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,4 +31,7 @@ public class RepresentativeService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+
+
 }

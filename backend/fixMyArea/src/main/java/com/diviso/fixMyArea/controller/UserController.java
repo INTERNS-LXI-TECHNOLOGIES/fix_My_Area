@@ -19,7 +19,9 @@ public class UserController {
 
     @GetMapping
     public List<User> getAll() {
+
         return service.findAll();
+        
     }
 
     @GetMapping("/{id}")
