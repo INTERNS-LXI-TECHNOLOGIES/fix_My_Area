@@ -31,4 +31,13 @@ public class LocationService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+
+   public Location findBYAddress(String address){
+    
+        return repository.findByAddress(address);
+
+   }
+
+
 }

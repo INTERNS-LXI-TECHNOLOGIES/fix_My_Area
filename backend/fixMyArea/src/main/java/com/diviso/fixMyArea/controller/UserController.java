@@ -31,17 +31,28 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public User create(@RequestBody User entity) {
-        return service.save(entity);
+
+
+
+    @PostMapping("/create")
+    public ResponseEntity<User> create(@RequestBody User entity,@RequestParam String address) {
+
+User savedUser = service.save(entity, address);
+
+
+    return ResponseEntity.ok(savedUser);
+   
     }
 
+
+
+
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User entity) {
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User entity,@RequestParam String address) {
         return service.findById(id)
                 .map(existingEntity -> {
                     entity.setId(id);
-                    return ResponseEntity.ok(service.save(entity));
+                    return ResponseEntity.ok(service.save(entity,address));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }

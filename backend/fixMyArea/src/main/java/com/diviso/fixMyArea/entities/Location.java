@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "location")
 @Getter
@@ -47,6 +49,11 @@ public class Location {
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Issue> issues;
+
+   @OneToMany(mappedBy = "geoHome")
+@JsonIgnore  // <--- Add this line
+private List<User> users;
+
 
     @PrePersist
     protected void onCreate() {
