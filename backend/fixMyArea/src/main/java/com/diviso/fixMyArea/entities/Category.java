@@ -27,9 +27,14 @@ public class Category {
     private String department;
 
     @Enumerated(EnumType.STRING)
+
     @Column(name = "level")
     private LevelType level;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Issue> issues;
+    
+
+
+
 }

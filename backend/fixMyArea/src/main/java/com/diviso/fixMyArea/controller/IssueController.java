@@ -27,18 +27,35 @@ public class IssueController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public Issue create(@RequestBody Issue issue) {
-        return service.save(issue);
+
+
+    @PostMapping("/create")
+    public Issue create(@RequestBody Issue issue){
+
+
+                        return service.save(issue);
+
+        
+
+
     }
 
+
+
     @PutMapping("/{id}")
-    public ResponseEntity<Issue> update(@PathVariable Long id, @RequestBody Issue issue) {
+    public ResponseEntity<Issue> update(@PathVariable Long id, @RequestBody Issue issue){
+
         return service.findById(id)
-                .map(existing -> {
+        
+                .map(existing ->  {
+                    
                     issue.setId(id);
-                    return ResponseEntity.ok(service.save(issue));
+                    
+                   return  service.save(issue);
+
                 })
+
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -51,6 +68,7 @@ public class IssueController {
                     return ResponseEntity.noContent().build();
                 })
                 .orElse(ResponseEntity.notFound().build());
-
     }
+
+
 }

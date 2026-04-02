@@ -37,10 +37,10 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<User> create(@RequestBody User entity,@RequestParam String address) {
 
-User savedUser = service.save(entity, address);
-
+    User savedUser = service.save(entity, address);
 
     return ResponseEntity.ok(savedUser);
+    
    
     }
 

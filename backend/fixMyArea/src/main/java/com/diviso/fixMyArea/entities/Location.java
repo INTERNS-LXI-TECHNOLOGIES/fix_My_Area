@@ -51,12 +51,18 @@ public class Location {
     private List<Issue> issues;
 
    @OneToMany(mappedBy = "geoHome")
-@JsonIgnore  // <--- Add this line
-private List<User> users;
+   @JsonIgnore 
+   private List<User> users;
 
 
     @PrePersist
     protected void onCreate() {
+
         createdAt = LocalDateTime.now();
+
+
     }
+
+
+ 
 }

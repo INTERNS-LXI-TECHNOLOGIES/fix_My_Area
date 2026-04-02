@@ -9,19 +9,22 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+   
     private String name;
+
+    private String profilePicture;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @com.fasterxml.jackson.annotation.JsonProperty("role")
     private UserRole role;
-
+ 
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "geo_home_id")   
@@ -30,8 +33,11 @@ public class User {
     @Column(name = "credibility_score")
     private Integer  credibilityScore;
 
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "verification_status")
     private VerificationStatus verificationStatus;
+
+
 
 }
