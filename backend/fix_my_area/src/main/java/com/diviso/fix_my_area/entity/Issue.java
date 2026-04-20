@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import java.time.Instant;
 import java.time.LocalDate;
 import com.diviso.fix_my_area.enumeration.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
 @Entity
 @Table(name = "issue")
@@ -45,13 +47,23 @@ public class Issue {
     private Long stateId;
     private Instant assignedAt;
     @ManyToOne
+    @JsonIgnoreProperties({"issues", "otherRelationalField"})
     private UserProfile userProfile;
     @ManyToOne
+    @JsonIgnoreProperties("issues")
     private Ward ward;
     @ManyToOne
+    @JsonIgnoreProperties("issues")
     private IssueCategory issueCategory;
     @ManyToOne
     private Authority assignedAuthority;
     @Version
     private Long version;
+
+    @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("issue") // Prevents infinite recursion in JSON
+    private List<IssueComment> issueComments;
+
+
+
 }
