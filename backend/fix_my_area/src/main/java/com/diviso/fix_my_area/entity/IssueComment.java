@@ -24,8 +24,12 @@ public class IssueComment {
     private Boolean isFromAuthority;
     private Boolean isDeleted;
     private Instant createdAt;
+ 
+    // This field name "issue" MUST match the mappedBy = "issue" in Issue.java
     @ManyToOne
+    @JoinColumn(name = "issue_id")
     private Issue issue;
+
     @ManyToOne
     private UserProfile userProfile;
     @ManyToOne
@@ -34,4 +38,6 @@ public class IssueComment {
     private IssueComment parentComment;
     @Version
     private Long version;
+
+    
 }

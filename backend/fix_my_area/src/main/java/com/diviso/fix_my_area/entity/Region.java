@@ -27,4 +27,6 @@ public class Region {
     private District district;
     @Version
     private Long version;
+
+    
 }

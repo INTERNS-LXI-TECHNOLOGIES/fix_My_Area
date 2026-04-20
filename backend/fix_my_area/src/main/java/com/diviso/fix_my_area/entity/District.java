@@ -14,6 +14,7 @@ import com.diviso.fix_my_area.enumeration.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class District {
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +28,7 @@ public class District {
     private State state;
     @Version
     private Long version;
+
+
+
 }
