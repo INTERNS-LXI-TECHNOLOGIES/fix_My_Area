@@ -5,7 +5,10 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 // Define the structure to be resilient to missing data
+
+
 interface Issue {
+
   id: string;
   title: string;
   category: string;
@@ -19,14 +22,18 @@ interface Issue {
   suggestionCount: number;
   evidenceCount: number;
   responses?: Array<{ 
-    authorName: string;
-    authorRole: string;
-    authorImage: string;
-    type: 'STRONG SUPPORT' | 'EXPERT INPUT' | 'COMMENT';
-    timeAgo: string;
-    content: string;
-    likes: number;
+  authorName: string;
+  authorRole: string;
+  authorImage: string;
+  type: 'STRONG SUPPORT' | 'EXPERT INPUT' | 'COMMENT';
+  timeAgo: string;
+  content: string;
+  likes: number;
+
+
   }>;
+
+
 }
 
 export default function CivicParliamentFeed({ issues = [] }: { issues: Issue[] }) {
@@ -186,7 +193,7 @@ export default function CivicParliamentFeed({ issues = [] }: { issues: Issue[] }
                 </button>
                 {/* ✅ FIXED: Button now uses the correctly initialized router */}
                 <button 
-                  onClick={() => router.push(`/make-a-command/editor?issueId=${issue.id}`)}
+                  onClick={() => router.push(`/make-a-comments/editor?issueId=${issue.id}`)}
                   className="flex-1 bg-[#1E3A8A] text-white py-3 rounded-xl font-bold text-base"
                 >
                   📜 Command

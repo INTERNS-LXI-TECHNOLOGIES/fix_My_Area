@@ -22,10 +22,12 @@ import globalAxios from 'axios';
 export const BASE_PATH = "http://localhost:8080".replace(/\/+$/, "");
 
 export const COLLECTION_FORMATS = {
+
     csv: ",",
     ssv: " ",
     tsv: "\t",
     pipes: "|",
+    
 };
 
 export interface RequestArgs {
