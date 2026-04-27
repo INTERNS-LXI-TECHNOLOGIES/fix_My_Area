@@ -81,7 +81,7 @@ export default function CivicParliamentFeed({ issues = [] }: { issues: Issue[] }
                 🏷️ {issue.category}
               </div>
               <div className="border border-gray-200 bg-white px-5 py-2 rounded-full flex gap-2 items-center font-semibold text-gray-700">
-                📍 {issue.ward}
+                📍 {issue.ward}o issues found.
               </div>
               <button className="border border-gray-200 bg-white px-5 py-2 rounded-full flex gap-2 items-center font-semibold text-gray-700">
                 🗺️ Open in Maps

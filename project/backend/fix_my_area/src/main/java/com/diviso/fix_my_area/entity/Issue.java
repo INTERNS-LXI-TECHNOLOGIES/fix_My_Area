@@ -26,7 +26,7 @@ public class Issue {
     private String description;
     private String photoUrls;
     private String videoUrl;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
     @Enumerated(EnumType.STRING)
@@ -67,3 +67,4 @@ public class Issue {
 
 
 }
+
