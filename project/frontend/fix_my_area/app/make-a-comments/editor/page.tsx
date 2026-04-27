@@ -2,75 +2,76 @@
 
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-// Import your generated API - adjust the path if necessary
-import { IssueCommentControllerApi, Configuration } from '../../../src/api/generated'; 
+import { IssueCommentControllerApi } from '../../../src/api/generated';
 
 export default function CommandEditorPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  // 1. Get the Issue ID from the URL path (?issueId=...)
+
   const issueId = searchParams.get('issueId');
-  
-  // 2. State for the user's input
+
   const [commandText, setCommandText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 3. Setup API Configuration
-  const config = new Configuration({
-    basePath: "http://localhost:8080", // Your Spring Boot Server
-  });
-  const commentApi = new IssueCommentControllerApi(config);
-
-
-
+  // Initialize the API instance
+  const commentApi = new IssueCommentControllerApi();
 
 const handleSubmit = async () => {
-  // 🛑 SAFETY GATE: If there's no issueId, don't even try to send the request
-  if (!issueId) {
-    alert("Error: This command doesn't know which issue it belongs to. Please go back and try again.");
-    return;
-  }
-
+  if (!issueId) return alert("Error: No issue ID found");
   if (!commandText.trim()) return alert("Please enter a command!");
-  
+
   setIsSubmitting(true);
+  
   try {
-    await commentApi.create9({
-      issueComment: {
-        content: commandText,
-        isFromAuthority: false,
-        createdAt: new Date(),
-        // 🔗 FORCING THE LINK: We ensure this is a number
-        issue: { id: Number(issueId) } 
-      } as any 
+    const payload = {
+      content: commandText,
+      isFromAuthority: false,
+      isDeleted: false,
+      // Change this back to a Date object. 
+      // The generated API will call toISOString() internally.
+      createdAt: new Date(), 
+      
+      issue: { 
+        id: Number(issueId) 
+      },
+      userProfile: {
+        id: 1 // Ensure this ID exists in your 'user_profile' table!
+      }
+    };
+
+    console.log("Payload:", payload);
+
+    const response = await commentApi.create9({
+      issueComment: payload as any 
     });
 
-    alert("📜 Command successfully submitted!");
-    router.push('/issue-details-view'); 
+    alert("🚀 Command successfully submitted!");
+    router.push(`/issue-details-view/${issueId}`);
+    
   } catch (error) {
-    console.error("API Error:", error);
-    alert("Submission failed. Check your Spring Boot console.");
+    console.error("Full Error Object:", error);
+    alert("Submission failed. Check the Java backend console for the actual SQL/Mapping error.");
   } finally {
     setIsSubmitting(false);
   }
 };
 
 
-
-
-
   return (
     <div className="min-h-screen bg-gray-50 p-6 font-sans">
-      {/* Header Section */}
+      {/* Header */}
       <div className="max-w-2xl mx-auto flex items-center justify-between mb-8">
-        <button onClick={() => router.back()} className="text-gray-600 font-bold">
+        <button 
+          onClick={() => router.back()} 
+          className="text-gray-600 font-bold hover:opacity-70 transition-opacity"
+        >
           ✕ Cancel
         </button>
         <h1 className="text-xl font-black text-[#1E3A8A]">📜 DRAFT COMMAND</h1>
-        <div className="w-10"></div> {/* Spacer */}
+        <div className="w-10"></div>
       </div>
 
+      {/* Editor Card */}
       <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
         <div className="p-6 bg-[#1E3A8A] text-white">
           <p className="text-xs uppercase tracking-widest opacity-80">Reference Context</p>
@@ -78,19 +79,19 @@ const handleSubmit = async () => {
         </div>
 
         <div className="p-6">
-          <label className="block text-sm font-bold text-gray-400 mb-2 uppercase">Official Motion Content</label>
           <textarea
-            className="w-full h-80 p-5 bg-gray-50 border-none rounded-2xl text-gray-800 text-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
-            placeholder="Describe the necessary action for this area..."
+            className="w-full h-80 p-5 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-[#1E3A8A] outline-none text-gray-800"
+            placeholder="Type your command here..."
             value={commandText}
             onChange={(e) => setCommandText(e.target.value)}
+            disabled={isSubmitting}
           />
 
           <button
             onClick={handleSubmit}
-            disabled={isSubmitting}
-            className={`w-full mt-6 py-4 rounded-2xl font-bold text-lg transition-all ${
-              isSubmitting ? "bg-gray-400" : "bg-[#111827] text-white hover:bg-black"
+            disabled={isSubmitting || !commandText.trim()}
+            className={`w-full mt-6 py-4 rounded-2xl font-bold transition-all ${
+              isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"
             }`}
           >
             {isSubmitting ? "Processing..." : "🚀 Post to Parliament"}

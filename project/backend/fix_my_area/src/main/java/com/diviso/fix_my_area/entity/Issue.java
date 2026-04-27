@@ -60,10 +60,11 @@ public class Issue {
     @Version
     private Long version;
 
-    @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("issue") // Prevents infinite recursion in JSON
-    private List<IssueComment> issueComments;
 
+
+@OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+@com.fasterxml.jackson.annotation.JsonManagedReference
+private List<IssueComment> issueComments;
 
 
 }
