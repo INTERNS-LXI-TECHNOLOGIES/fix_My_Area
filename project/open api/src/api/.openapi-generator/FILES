@@ -24,6 +24,7 @@ docs/IssueCategory.md
 docs/IssueCategoryControllerApi.md
 docs/IssueComment.md
 docs/IssueCommentControllerApi.md
+docs/IssueCommentRequest.md
 docs/IssueControllerApi.md
 docs/IssueStatusHistory.md
 docs/IssueStatusHistoryControllerApi.md
@@ -48,6 +49,7 @@ models/District.ts
 models/Issue.ts
 models/IssueCategory.ts
 models/IssueComment.ts
+models/IssueCommentRequest.ts
 models/IssueStatusHistory.ts
 models/IssueVote.ts
 models/Location.ts

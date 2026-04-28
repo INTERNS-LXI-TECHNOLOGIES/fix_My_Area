@@ -30,6 +30,7 @@ Name | Type | Description | Notes
 **issueCategory** | [**IssueCategory**](IssueCategory.md) |  | [optional] [default to undefined]
 **assignedAuthority** | [**Authority**](Authority.md) |  | [optional] [default to undefined]
 **version** | **number** |  | [optional] [default to undefined]
+**issueComments** | [**Array&lt;IssueComment&gt;**](IssueComment.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -62,6 +63,7 @@ const instance: Issue = {
     issueCategory,
     assignedAuthority,
     version,
+    issueComments,
 };
 ```
 

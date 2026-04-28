@@ -6,6 +6,7 @@ export * from './District';
 export * from './Issue';
 export * from './IssueCategory';
 export * from './IssueComment';
+export * from './IssueCommentRequest';
 export * from './IssueStatusHistory';
 export * from './IssueVote';
 export * from './Location';

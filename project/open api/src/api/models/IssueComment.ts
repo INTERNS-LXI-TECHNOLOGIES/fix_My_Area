@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Issue } from './Issue';
+import {
+    IssueFromJSON,
+    IssueFromJSONTyped,
+    IssueToJSON,
+    IssueToJSONTyped,
+} from './Issue';
 import type { UserProfile } from './UserProfile';
 import {
     UserProfileFromJSON,
@@ -66,6 +73,12 @@ export interface IssueComment {
     createdAt?: Date;
     /**
      * 
+     * @type {Issue}
+     * @memberof IssueComment
+     */
+    issue?: Issue;
+    /**
+     * 
      * @type {UserProfile}
      * @memberof IssueComment
      */
@@ -112,6 +125,7 @@ export function IssueCommentFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'isFromAuthority': json['isFromAuthority'] == null ? undefined : json['isFromAuthority'],
         'isDeleted': json['isDeleted'] == null ? undefined : json['isDeleted'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
+        'issue': json['issue'] == null ? undefined : IssueFromJSON(json['issue']),
         'userProfile': json['userProfile'] == null ? undefined : UserProfileFromJSON(json['userProfile']),
         'authority': json['authority'] == null ? undefined : AuthorityFromJSON(json['authority']),
         'parentComment': json['parentComment'] == null ? undefined : IssueCommentFromJSON(json['parentComment']),
@@ -135,6 +149,7 @@ export function IssueCommentToJSONTyped(value?: IssueComment | null, ignoreDiscr
         'isFromAuthority': value['isFromAuthority'],
         'isDeleted': value['isDeleted'],
         'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
+        'issue': IssueToJSON(value['issue']),
         'userProfile': UserProfileToJSON(value['userProfile']),
         'authority': AuthorityToJSON(value['authority']),
         'parentComment': IssueCommentToJSON(value['parentComment']),

@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
@@ -16,6 +15,7 @@ docs/IssueCategory.md
 docs/IssueCategoryControllerApi.md
 docs/IssueComment.md
 docs/IssueCommentControllerApi.md
+docs/IssueCommentRequest.md
 docs/IssueControllerApi.md
 docs/IssueStatusHistory.md
 docs/IssueStatusHistoryControllerApi.md

@@ -14,7 +14,7 @@ All URIs are relative to *http://localhost:8080*
 
 ## create9
 
-> IssueComment create9(issueComment)
+> IssueComment create9(issueCommentRequest)
 
 
 
@@ -32,8 +32,8 @@ async function example() {
   const api = new IssueCommentControllerApi();
 
   const body = {
-    // IssueComment
-    issueComment: ...,
+    // IssueCommentRequest | Issue Comment Request
+    issueCommentRequest: ...,
   } satisfies Create9Request;
 
   try {
@@ -53,7 +53,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **issueComment** | [IssueComment](IssueComment.md) |  | |
+| **issueCommentRequest** | [IssueCommentRequest](IssueCommentRequest.md) | Issue Comment Request | |
 
 ### Return type
 
@@ -286,7 +286,7 @@ async function example() {
   const body = {
     // number
     id: 789,
-    // IssueComment
+    // IssueComment (optional)
     issueComment: ...,
   } satisfies Update9Request;
 
@@ -308,7 +308,7 @@ example().catch(console.error);
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | `number` |  | [Defaults to `undefined`] |
-| **issueComment** | [IssueComment](IssueComment.md) |  | |
+| **issueComment** | [IssueComment](IssueComment.md) |  | [Optional] |
 
 ### Return type
 

@@ -11,7 +11,7 @@ All URIs are relative to *http://localhost:8080*
 |[**update9**](#update9) | **PUT** /api/issuecomments/{id} | |
 
 # **create9**
-> IssueComment create9(issueComment)
+> IssueComment create9(issueCommentRequest)
 
 
 ### Example
@@ -20,16 +20,16 @@ All URIs are relative to *http://localhost:8080*
 import {
     IssueCommentControllerApi,
     Configuration,
-    IssueComment
+    IssueCommentRequest
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new IssueCommentControllerApi(configuration);
 
-let issueComment: IssueComment; //
+let issueCommentRequest: IssueCommentRequest; //Issue Comment Request
 
 const { status, data } = await apiInstance.create9(
-    issueComment
+    issueCommentRequest
 );
 ```
 
@@ -37,7 +37,7 @@ const { status, data } = await apiInstance.create9(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **issueComment** | **IssueComment**|  | |
+| **issueCommentRequest** | **IssueCommentRequest**| Issue Comment Request | |
 
 
 ### Return type
@@ -205,7 +205,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update9**
-> IssueComment update9(issueComment)
+> IssueComment update9()
 
 
 ### Example
@@ -221,7 +221,7 @@ const configuration = new Configuration();
 const apiInstance = new IssueCommentControllerApi(configuration);
 
 let id: number; // (default to undefined)
-let issueComment: IssueComment; //
+let issueComment: IssueComment; // (optional)
 
 const { status, data } = await apiInstance.update9(
     id,

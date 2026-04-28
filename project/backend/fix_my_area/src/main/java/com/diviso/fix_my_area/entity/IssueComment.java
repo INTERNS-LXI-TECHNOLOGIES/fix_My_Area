@@ -27,11 +27,12 @@ public class IssueComment {
     private Instant createdAt;
  
     // This field name "issue" MUST match the mappedBy = "issue" in Issue.java
-    
-   
+
+
+
 @ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "issue_id") // Matches your DB column name
-@JsonIgnoreProperties("issueComments") // Stops the loop, but lets the ID through
+@JoinColumn(name = "issue_id")
+@JsonIgnoreProperties("issueComments")  // ✅ FIXED
 private Issue issue;
 
 

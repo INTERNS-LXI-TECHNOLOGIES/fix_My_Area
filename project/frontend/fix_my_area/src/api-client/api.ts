@@ -145,6 +145,7 @@ export interface Issue {
     'issueCategory'?: IssueCategory;
     'assignedAuthority'?: Authority;
     'version'?: number;
+    'issueComments'?: Array<IssueComment>;
 }
 
 export const IssueVisibilityLevelEnum = {
@@ -197,6 +198,13 @@ export interface IssueComment {
     'authority'?: Authority;
     'parentComment'?: IssueComment;
     'version'?: number;
+}
+export interface IssueCommentRequest {
+    'content'?: string;
+    'isFromAuthority'?: boolean;
+    'isDeleted'?: boolean;
+    'issueId'?: number;
+    'userProfileId'?: number;
 }
 export interface IssueStatusHistory {
     'id'?: number;
@@ -1742,13 +1750,13 @@ export const IssueCommentControllerApiAxiosParamCreator = function (configuratio
     return {
         /**
          * 
-         * @param {IssueComment} issueComment 
+         * @param {IssueCommentRequest} issueCommentRequest Issue Comment Request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        create9: async (issueComment: IssueComment, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'issueComment' is not null or undefined
-            assertParamExists('create9', 'issueComment', issueComment)
+        create9: async (issueCommentRequest: IssueCommentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'issueCommentRequest' is not null or undefined
+            assertParamExists('create9', 'issueCommentRequest', issueCommentRequest)
             const localVarPath = `/api/issuecomments`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1767,7 +1775,7 @@ export const IssueCommentControllerApiAxiosParamCreator = function (configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(issueComment, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(issueCommentRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1871,15 +1879,13 @@ export const IssueCommentControllerApiAxiosParamCreator = function (configuratio
         /**
          * 
          * @param {number} id 
-         * @param {IssueComment} issueComment 
+         * @param {IssueComment} [issueComment] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        update9: async (id: number, issueComment: IssueComment, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        update9: async (id: number, issueComment?: IssueComment, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('update9', 'id', id)
-            // verify required parameter 'issueComment' is not null or undefined
-            assertParamExists('update9', 'issueComment', issueComment)
             const localVarPath = `/api/issuecomments/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1917,12 +1923,12 @@ export const IssueCommentControllerApiFp = function(configuration?: Configuratio
     return {
         /**
          * 
-         * @param {IssueComment} issueComment 
+         * @param {IssueCommentRequest} issueCommentRequest Issue Comment Request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async create9(issueComment: IssueComment, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IssueComment>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.create9(issueComment, options);
+        async create9(issueCommentRequest: IssueCommentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IssueComment>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create9(issueCommentRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IssueCommentControllerApi.create9']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1965,11 +1971,11 @@ export const IssueCommentControllerApiFp = function(configuration?: Configuratio
         /**
          * 
          * @param {number} id 
-         * @param {IssueComment} issueComment 
+         * @param {IssueComment} [issueComment] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async update9(id: number, issueComment: IssueComment, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IssueComment>> {
+        async update9(id: number, issueComment?: IssueComment, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<IssueComment>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.update9(id, issueComment, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['IssueCommentControllerApi.update9']?.[localVarOperationServerIndex]?.url;
@@ -1986,12 +1992,12 @@ export const IssueCommentControllerApiFactory = function (configuration?: Config
     return {
         /**
          * 
-         * @param {IssueComment} issueComment 
+         * @param {IssueCommentRequest} issueCommentRequest Issue Comment Request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        create9(issueComment: IssueComment, options?: RawAxiosRequestConfig): AxiosPromise<IssueComment> {
-            return localVarFp.create9(issueComment, options).then((request) => request(axios, basePath));
+        create9(issueCommentRequest: IssueCommentRequest, options?: RawAxiosRequestConfig): AxiosPromise<IssueComment> {
+            return localVarFp.create9(issueCommentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2022,11 +2028,11 @@ export const IssueCommentControllerApiFactory = function (configuration?: Config
         /**
          * 
          * @param {number} id 
-         * @param {IssueComment} issueComment 
+         * @param {IssueComment} [issueComment] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        update9(id: number, issueComment: IssueComment, options?: RawAxiosRequestConfig): AxiosPromise<IssueComment> {
+        update9(id: number, issueComment?: IssueComment, options?: RawAxiosRequestConfig): AxiosPromise<IssueComment> {
             return localVarFp.update9(id, issueComment, options).then((request) => request(axios, basePath));
         },
     };
@@ -2038,12 +2044,12 @@ export const IssueCommentControllerApiFactory = function (configuration?: Config
 export class IssueCommentControllerApi extends BaseAPI {
     /**
      * 
-     * @param {IssueComment} issueComment 
+     * @param {IssueCommentRequest} issueCommentRequest Issue Comment Request
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public create9(issueComment: IssueComment, options?: RawAxiosRequestConfig) {
-        return IssueCommentControllerApiFp(this.configuration).create9(issueComment, options).then((request) => request(this.axios, this.basePath));
+    public create9(issueCommentRequest: IssueCommentRequest, options?: RawAxiosRequestConfig) {
+        return IssueCommentControllerApiFp(this.configuration).create9(issueCommentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2078,11 +2084,11 @@ export class IssueCommentControllerApi extends BaseAPI {
     /**
      * 
      * @param {number} id 
-     * @param {IssueComment} issueComment 
+     * @param {IssueComment} [issueComment] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public update9(id: number, issueComment: IssueComment, options?: RawAxiosRequestConfig) {
+    public update9(id: number, issueComment?: IssueComment, options?: RawAxiosRequestConfig) {
         return IssueCommentControllerApiFp(this.configuration).update9(id, issueComment, options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -2,13 +2,15 @@
 
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { IssueCommentControllerApi } from '../../../src/api/generated';
+import { IssueCommentControllerApi } from '../../../src/api-client';
 
 export default function CommandEditorPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const issueId = searchParams.get('issueId');
+
+  console.log("Retrieved issueId from URL:", issueId);
 
   const [commandText, setCommandText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,36 +23,24 @@ const handleSubmit = async () => {
   if (!commandText.trim()) return alert("Please enter a command!");
 
   setIsSubmitting(true);
-  
-  try {
-    const payload = {
-      content: commandText,
-      isFromAuthority: false,
-      isDeleted: false,
-      // Change this back to a Date object. 
-      // The generated API will call toISOString() internally.
-      createdAt: new Date(), 
-      
-      issue: { 
-        id: Number(issueId) 
-      },
-      userProfile: {
-        id: 1 // Ensure this ID exists in your 'user_profile' table!
-      }
-    };
 
-    console.log("Payload:", payload);
+ try {
 
-    const response = await commentApi.create9({
-      issueComment: payload as any 
-    });
+const payload = {
+  content: commandText,
+  isFromAuthority: false,
+  isDeleted: false,
+  issueId: Number(issueId),
+  userProfileId: 1
+};
+await commentApi.create9(payload);
 
     alert("🚀 Command successfully submitted!");
     router.push(`/issue-details-view/${issueId}`);
-    
+
   } catch (error) {
     console.error("Full Error Object:", error);
-    alert("Submission failed. Check the Java backend console for the actual SQL/Mapping error.");
+    alert("Submission failed.");
   } finally {
     setIsSubmitting(false);
   }

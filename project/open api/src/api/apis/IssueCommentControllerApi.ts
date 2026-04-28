@@ -16,14 +16,17 @@
 import * as runtime from '../runtime';
 import type {
   IssueComment,
+  IssueCommentRequest,
 } from '../models/index';
 import {
     IssueCommentFromJSON,
     IssueCommentToJSON,
+    IssueCommentRequestFromJSON,
+    IssueCommentRequestToJSON,
 } from '../models/index';
 
 export interface Create9Request {
-    issueComment: IssueComment;
+    issueCommentRequest: IssueCommentRequest;
 }
 
 export interface Delete9Request {
@@ -36,7 +39,7 @@ export interface GetById9Request {
 
 export interface Update9Request {
     id: number;
-    issueComment: IssueComment;
+    issueComment?: IssueComment;
 }
 
 /**
@@ -48,10 +51,10 @@ export class IssueCommentControllerApi extends runtime.BaseAPI {
      * Creates request options for create9 without sending the request
      */
     async create9RequestOpts(requestParameters: Create9Request): Promise<runtime.RequestOpts> {
-        if (requestParameters['issueComment'] == null) {
+        if (requestParameters['issueCommentRequest'] == null) {
             throw new runtime.RequiredError(
-                'issueComment',
-                'Required parameter "issueComment" was null or undefined when calling create9().'
+                'issueCommentRequest',
+                'Required parameter "issueCommentRequest" was null or undefined when calling create9().'
             );
         }
 
@@ -69,7 +72,7 @@ export class IssueCommentControllerApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: IssueCommentToJSON(requestParameters['issueComment']),
+            body: IssueCommentRequestToJSON(requestParameters['issueCommentRequest']),
         };
     }
 
@@ -217,13 +220,6 @@ export class IssueCommentControllerApi extends runtime.BaseAPI {
             throw new runtime.RequiredError(
                 'id',
                 'Required parameter "id" was null or undefined when calling update9().'
-            );
-        }
-
-        if (requestParameters['issueComment'] == null) {
-            throw new runtime.RequiredError(
-                'issueComment',
-                'Required parameter "issueComment" was null or undefined when calling update9().'
             );
         }
 

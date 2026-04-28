@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.diviso.fix_my_area.repository.IssueRepository;
 import com.diviso.fix_my_area.repository.UserProfileRepository;
 import com.diviso.fix_my_area.entity.UserProfile;
+import com.diviso.fix_my_area.dto.IssueCommentRequest;
 
 @Service
 public class IssueCommentService {
@@ -34,30 +35,44 @@ public class IssueCommentService {
 
 
 @Transactional
-public IssueComment save(IssueComment issueComment) {
+
+public IssueComment saveFromDto(IssueCommentRequest dto) {
+
+
     
-        // 1. Fix the Issue reference
-        if (issueComment.getIssue() != null && issueComment.getIssue().getId() != null) {
-            issueComment.setIssue(issueRepository.getReferenceById(issueComment.getIssue().getId()));
-        }
-
-        // 2. Fix the UserProfile reference (THIS IS THE CRASH FIX)
-        if (issueComment.getUserProfile() != null && issueComment.getUserProfile().getId() != null) {
-            // By using getReferenceById, we tell Hibernate to use the existing DB record
-            issueComment.setUserProfile(userProfileRepository.getReferenceById(issueComment.getUserProfile().getId()));
-        }
-        
-        // 3. Set default timestamp if missing
-        if (issueComment.getCreatedAt() == null) {
-            issueComment.setCreatedAt(java.time.Instant.now());
-        }
-
-        return repository.save(issueComment);
-    }
+System.out.println("IssueId: " + dto.getIssueId());
+System.out.println("UserProfileId: " + dto.getUserProfileId());
 
 
+    IssueComment comment = new IssueComment();
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
+    comment.setContent(dto.getContent());
+
+    
+    Issue issue = issueRepository.findById(dto.getIssueId())
+        .orElseThrow(() -> new RuntimeException("Issue not found"));
+    comment.setIssue(issue);
+
+ 
+
+    
+    UserProfile user = userProfileRepository.findById(dto.getUserProfileId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    comment.setUserProfile(user);
+
+
+
+
+    return repository.save(comment);
+}
+
+public IssueComment save(IssueComment comment) {
+    return repository.save(comment);
+}
+
+
+public void deleteById(Long id) {
+    repository.deleteById(id);
+}
+
 }

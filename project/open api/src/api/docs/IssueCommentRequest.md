@@ -1,40 +1,30 @@
 
-# IssueComment
+# IssueCommentRequest
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`id` | number
 `content` | string
 `isFromAuthority` | boolean
 `isDeleted` | boolean
-`createdAt` | Date
-`issue` | [Issue](Issue.md)
-`userProfile` | [UserProfile](UserProfile.md)
-`authority` | [Authority](Authority.md)
-`parentComment` | [IssueComment](IssueComment.md)
-`version` | number
+`issueId` | number
+`userProfileId` | number
 
 ## Example
 
 ```typescript
-import type { IssueComment } from ''
+import type { IssueCommentRequest } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "id": null,
   "content": null,
   "isFromAuthority": null,
   "isDeleted": null,
-  "createdAt": null,
-  "issue": null,
-  "userProfile": null,
-  "authority": null,
-  "parentComment": null,
-  "version": null,
-} satisfies IssueComment
+  "issueId": null,
+  "userProfileId": null,
+} satisfies IssueCommentRequest
 
 console.log(example)
 
@@ -43,7 +33,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as IssueComment
+const exampleParsed = JSON.parse(exampleJSON) as IssueCommentRequest
 console.log(exampleParsed)
 ```
 
