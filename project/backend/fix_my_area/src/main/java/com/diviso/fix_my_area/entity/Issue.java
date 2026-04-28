@@ -24,9 +24,10 @@ public class Issue {
     private String title;
     @Lob
     private String description;
-    private String photoUrls;
-    private String videoUrl;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Lob
+    @Column(name = "photo", columnDefinition = "LONGBLOB")
+    private byte[] photo;
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
     @Enumerated(EnumType.STRING)
