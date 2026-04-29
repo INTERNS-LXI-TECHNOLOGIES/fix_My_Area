@@ -20,7 +20,7 @@ export default async function Page() {
 
 
 
-    // ✅ Convert to array (important fix)
+    // ✅ Convert to array (important fix
     const backendData = [issue];
 
     const mappedIssues = backendData.map((item: any) => {
