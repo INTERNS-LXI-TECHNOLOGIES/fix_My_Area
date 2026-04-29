@@ -26,13 +26,18 @@ const handleSubmit = async () => {
 
  try {
 
+
 const payload = {
+
   content: commandText,
   isFromAuthority: false,
   isDeleted: false,
   issueId: Number(issueId),
   userProfileId: 1
+
 };
+
+
 await commentApi.create9(payload);
 
     alert("🚀 Command successfully submitted!");
@@ -42,8 +47,11 @@ await commentApi.create9(payload);
     console.error("Full Error Object:", error);
     alert("Submission failed.");
   } finally {
+
     setIsSubmitting(false);
+
   }
+
 };
 
 
@@ -90,4 +98,5 @@ await commentApi.create9(payload);
       </div>
     </div>
   );
+  
 }
