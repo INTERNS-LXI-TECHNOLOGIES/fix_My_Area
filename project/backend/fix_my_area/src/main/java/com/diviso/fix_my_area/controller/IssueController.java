@@ -93,6 +93,16 @@ public ResponseEntity<Issue> createIssue(
     location.setLongitude(longitude);
     issue.setLocation(location);
 
+
+    if (file != null && !file.isEmpty()) {
+        // Handle file upload
+        try{
+            issue.setPhoto(file.getBytes());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+                                                                                
     return ResponseEntity.ok(service.save(issue));
 }
 }
