@@ -69,25 +69,27 @@ public ResponseEntity<Issue> createIssue(
         @RequestParam Double longitude,
         @RequestParam(required = false) MultipartFile file
 ) {
-
+    if (title == null || title.isEmpty() || description == null || description.isEmpty()) {
+        return ResponseEntity.badRequest().build();
+    }
     Issue issue = new Issue();
     issue.setTitle(title);
     issue.setDescription(description);
     issue.setCreatedAt(java.time.Instant.now());
     issue.setIsDeleted(false);
 
-    // ✅ REQUIRED FIX
+    // REQUIRED FIX
     issue.setVisibilityLevel(VisibilityLevel.WARD); // Default visibility level
     issue.setIssueStatus(IssueStatus.RAISED); // Default status
     issue.setPriorityLevel(PriorityLevel.MEDIUM); // Default priority
 
-    // ✅ Category (correct)
+    //  Category (correct)
     IssueCategory category = issueCategoryRepository.findById(issueCategoryId)
             .orElseThrow(() -> new RuntimeException("Category not found"));
 
     issue.setIssueCategory(category);
 
-    // ✅ Location
+    //  Location
     Location location = new Location();
     location.setLatitude(latitude);
     location.setLongitude(longitude);

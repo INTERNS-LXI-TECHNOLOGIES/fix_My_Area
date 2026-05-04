@@ -150,7 +150,9 @@ export default function RaiseIssuePage() {
             className="w-full border rounded-xl p-3 text-sm
             text-blue-700 placeholder:text-slate-400"
             placeholder="Issue title"
+            
             value={title}
+            
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>

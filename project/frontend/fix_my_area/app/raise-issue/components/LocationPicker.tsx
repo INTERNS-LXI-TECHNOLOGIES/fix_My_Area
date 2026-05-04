@@ -2,7 +2,7 @@
 
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import { useState, useEffect } from "react";
-import "./leaflet-icon-fix";
+import "../../../map/leaflet-icon-fix";
 
 type Props = {
   onSelect: (loc: { lat: number; lng: number }) => void;
@@ -31,7 +31,7 @@ export default function LocationPicker({ onSelect }: Props) {
       console.log("Location error:", err);
     },
     {
-      enableHighAccuracy: true, // 🔥 IMPORTANT
+      enableHighAccuracy: true,
       timeout: 10000,
       maximumAge: 0,
     }
