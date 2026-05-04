@@ -22,6 +22,8 @@ public class IssueCommentService {
     }
 
     public IssueComment save(IssueComment entity) {
+
+        
         return repository.save(entity);
     }
 

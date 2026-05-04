@@ -35,6 +35,8 @@ public class Issue {
     private IssueStatus issueStatus;
     @Enumerated(EnumType.STRING)
     private PriorityLevel priorityLevel;
+    @Enumerated(EnumType.STRING)
+private IssueStatus status;
     private Boolean isDeleted;
     private Instant createdAt;
     private Instant updatedAt;
@@ -60,10 +62,16 @@ public class Issue {
     @Version
     private Long version;
 
+
+
+
+
     @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("issue") // Prevents infinite recursion in JSON
     private List<IssueComment> issueComments;
 
 
+
+    
 
 }
