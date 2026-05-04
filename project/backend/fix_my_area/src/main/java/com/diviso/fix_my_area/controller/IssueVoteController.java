@@ -5,6 +5,8 @@ import com.diviso.fix_my_area.service.IssueVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.diviso.fix_my_area.dto.IssueVoteRequest;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 
@@ -27,10 +29,21 @@ public class IssueVoteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
+    
     @PostMapping
-    public IssueVote create(@RequestBody IssueVote issueVote) {
-        return service.save(issueVote);
+    public IssueVote create(@RequestBody IssueVoteRequest issueVoteRequest) {
+
+
+        Long issueId =  issueVoteRequest.getIssueId();
+
+        System.out.println("Controller Checks The Issue Id :" + issueId);
+
+         return service.dtoFormData(issueVoteRequest);
     }
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<IssueVote> update(@PathVariable Long id, @RequestBody IssueVote issueVote) {

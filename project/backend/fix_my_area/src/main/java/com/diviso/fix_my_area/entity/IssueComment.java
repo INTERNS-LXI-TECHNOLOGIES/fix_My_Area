@@ -29,19 +29,18 @@ public class IssueComment {
     // This field name "issue" MUST match the mappedBy = "issue" in Issue.java
 
 
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "issue_id")
+ @JsonIgnoreProperties("issueComments")  // ✅ FIXED
+ private Issue issue;
 
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "issue_id")
-@JsonIgnoreProperties("issueComments")  // ✅ FIXED
-private Issue issue;
 
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "user_profile_id") // Matches your DB column name
+ @JsonIgnoreProperties("issueComments") 
+ private UserProfile userProfile;
 
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "user_profile_id") // Matches your DB column name
-@JsonIgnoreProperties("issueComments") 
-private UserProfile userProfile;
-
-    @ManyToOne
+   @ManyToOne
     private Authority authority;
     @ManyToOne
     private IssueComment parentComment;

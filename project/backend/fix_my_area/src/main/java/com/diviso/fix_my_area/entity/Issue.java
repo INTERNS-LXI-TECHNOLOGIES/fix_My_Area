@@ -57,11 +57,14 @@ public class Issue {
     private IssueCategory issueCategory;
     @ManyToOne
     private Authority assignedAuthority;
+
+  
     @Version
     private Long version;
 
 
-@OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-private List<IssueComment> issueComments;
+ @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+ private List<IssueComment> issueComments;
+  
 
 }

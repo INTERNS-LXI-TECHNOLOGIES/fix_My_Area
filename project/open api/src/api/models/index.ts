@@ -9,6 +9,7 @@ export * from './IssueComment';
 export * from './IssueCommentRequest';
 export * from './IssueStatusHistory';
 export * from './IssueVote';
+export * from './IssueVoteRequest';
 export * from './Location';
 export * from './Panchayath';
 export * from './Region';

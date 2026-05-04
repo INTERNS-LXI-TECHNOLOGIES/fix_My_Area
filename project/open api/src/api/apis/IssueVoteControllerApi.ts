@@ -23,7 +23,6 @@ import {
 } from '../models/index';
 
 export interface Create6Request {
-    issueVote: IssueVote;
 }
 
 export interface Delete6Request {
@@ -48,10 +47,7 @@ export class IssueVoteControllerApi extends runtime.BaseAPI {
      * Creates request options for create6 without sending the request
      */
     async create6RequestOpts(requestParameters: Create6Request): Promise<runtime.RequestOpts> {
-        if (requestParameters['issueVote'] == null) {
             throw new runtime.RequiredError(
-                'issueVote',
-                'Required parameter "issueVote" was null or undefined when calling create6().'
             );
         }
 
@@ -69,7 +65,6 @@ export class IssueVoteControllerApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: IssueVoteToJSON(requestParameters['issueVote']),
         };
     }
 

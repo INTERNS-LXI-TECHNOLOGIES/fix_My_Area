@@ -30,6 +30,7 @@ docs/IssueStatusHistory.md
 docs/IssueStatusHistoryControllerApi.md
 docs/IssueVote.md
 docs/IssueVoteControllerApi.md
+docs/IssueVoteRequest.md
 docs/Location.md
 docs/LocationControllerApi.md
 docs/Panchayath.md
@@ -52,6 +53,7 @@ models/IssueComment.ts
 models/IssueCommentRequest.ts
 models/IssueStatusHistory.ts
 models/IssueVote.ts
+models/IssueVoteRequest.ts
 models/Location.ts
 models/Panchayath.ts
 models/Region.ts

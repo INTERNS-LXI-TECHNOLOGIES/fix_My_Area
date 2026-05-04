@@ -5,28 +5,29 @@ import { IssueControllerApi } from '../../../src/api/generated';
 const api = new IssueControllerApi();
 
 export default async function Page() {
-  
   try {
-
-    
-    
     const issue = await api.getById8({ id: 1 });
 
     if (!issue) {
-
       return <div className="p-10 text-center">No issue found.</div>;
-
     }
 
-
-
-    // ✅ Convert to array (important fix
     const backendData = [issue];
 
     const mappedIssues = backendData.map((item: any) => {
       const imageList = item.photo_urls
         ? [item.photo_urls]
         : ["https://images.unsplash.com/photo-1584467541268-b040f83be3fd"];
+
+      const comments = item.issueComments || [];
+
+      const mainComments = comments.filter(
+        (c: any) => !c.parentComment && !c.parent_comment_id
+      );
+
+      const replies = comments.filter(
+        (c: any) => c.parentComment || c.parent_comment_id
+      );
 
       return {
         id: item.id?.toString() || "1",
@@ -40,34 +41,28 @@ export default async function Page() {
         images: imageList,
 
         supportCount: item.voteCount || item.vote_count || 0,
-        concernCount: 5,
-        suggestionCount: 3,
-        evidenceCount: imageList.length,
 
-        responses:
-          item.issueComments?.map((comm: any) => ({
-            authorName: comm.userProfile?.fullName || "Resident",
-            authorRole: comm.isFromAuthority
-              ? "Official Authority"
-              : "Resident",
-            authorImage:
-              comm.userProfile?.profilePhotoUrl ||
-              `https://ui-avatars.com/api/?name=${
-                comm.userProfile?.fullName || "User"
-              }`,
-            type: comm.isFromAuthority
-              ? "EXPERT INPUT"
-              : "STRONG SUPPORT",
-            timeAgo: "Recently",
-            content: comm.content,
-            likes: 0,
-          })) || [],
+        // ✅ comments mapped
+        responses: mainComments.map((comm: any) => ({
+          id: comm.id,
+          content: comm.content,
+
+          replies: replies
+            .filter((r: any) =>
+              r.parentComment?.id
+                ? r.parentComment.id === comm.id
+                : r.parent_comment_id === comm.id
+            )
+            .map((r: any) => ({
+              id: r.id,
+              content: r.content,
+            })),
+        })),
       };
     });
 
     return <CivicFeed issues={mappedIssues} />;
   } catch (error) {
-    console.error("Connection Error:", error);
     return (
       <div className="p-10 text-center text-red-500">
         Backend Connection Failed

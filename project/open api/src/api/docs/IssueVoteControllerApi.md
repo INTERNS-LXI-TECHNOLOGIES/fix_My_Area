@@ -14,7 +14,7 @@ All URIs are relative to *http://localhost:8080*
 
 ## create6
 
-> IssueVote create6(issueVote)
+> IssueVote create6(issueVoteRequest)
 
 
 
@@ -32,8 +32,8 @@ async function example() {
   const api = new IssueVoteControllerApi();
 
   const body = {
-    // IssueVote
-    issueVote: ...,
+    // IssueVoteRequest
+    issueVoteRequest: ...,
   } satisfies Create6Request;
 
   try {
@@ -53,7 +53,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **issueVote** | [IssueVote](IssueVote.md) |  | |
+| **issueVoteRequest** | [IssueVoteRequest](IssueVoteRequest.md) |  | |
 
 ### Return type
 
