@@ -1,4 +1,5 @@
 package com.diviso.fix_my_area.entity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,6 @@ import com.diviso.fix_my_area.enumeration.*;
 @AllArgsConstructor
 public class IssueCategory {
 
-    
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +27,4 @@ public class IssueCategory {
     private Instant createdAt;
     @Version
     private Long version;
-    
 }
-
-

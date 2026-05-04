@@ -6,12 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import com.diviso.fix_my_area.entity.Issue;
+import org.springframework.transaction.annotation.Transactional;
+import com.diviso.fix_my_area.repository.IssueRepository;
+import com.diviso.fix_my_area.repository.UserProfileRepository;
+import com.diviso.fix_my_area.entity.UserProfile;
+import com.diviso.fix_my_area.dto.IssueCommentRequest;
+import java.time.Instant;
+
 
 @Service
 public class IssueCommentService {
 
     @Autowired
     private IssueCommentRepository repository;
+
+    @Autowired
+    private IssueRepository issueRepository;
+
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     public List<IssueComment> findAll() {
         return repository.findAll();
@@ -21,11 +35,44 @@ public class IssueCommentService {
         return repository.findById(id);
     }
 
-    public IssueComment save(IssueComment entity) {
-        return repository.save(entity);
-    }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
+@Transactional
+
+public IssueComment saveFromDto(IssueCommentRequest dto) {
+
+
+
+
+
+    IssueComment comment = new IssueComment();
+
+    comment.setContent(dto.getContent());
+
+    
+    Issue issue = issueRepository.findById(dto.getIssueId())
+        .orElseThrow(() -> new RuntimeException("Issue not found"));
+    comment.setIssue(issue);
+
+
+    UserProfile user = userProfileRepository.findById(dto.getUserProfileId())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    comment.setUserProfile(user);
+
+
+comment.setCreatedAt(Instant.now());
+
+    return repository.save(comment);
+}
+
+
+
+public IssueComment save(IssueComment comment) {
+    return repository.save(comment);
+}
+
+
+public void deleteById(Long id) {
+    repository.deleteById(id);
+}
+
 }

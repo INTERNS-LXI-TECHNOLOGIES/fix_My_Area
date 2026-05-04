@@ -6,9 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import com.diviso.fix_my_area.repository.IssueCommentRepository;
+import com.diviso.fix_my_area.entity.IssueComment;
 
 @Service
 public class IssueService {
+
+@Autowired
+private IssueCommentService issueCommentService;
+
+
 
     @Autowired
     private IssueRepository repository;
@@ -22,7 +29,12 @@ public class IssueService {
     }
 
     public Issue save(Issue entity) {
+
+
+
         return repository.save(entity);
+
+
     }
 
     public void deleteById(Long id) {

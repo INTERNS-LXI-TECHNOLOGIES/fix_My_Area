@@ -18,12 +18,13 @@ public class IssueVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Instant votedAt;
     @ManyToOne
     private Issue issue;
     @ManyToOne
-    private UserProfile userProfile;
+    private UserProfile userProfile; 
     @Version
-    private Long version;
+    private Long version = 0L;
+
+
 }
