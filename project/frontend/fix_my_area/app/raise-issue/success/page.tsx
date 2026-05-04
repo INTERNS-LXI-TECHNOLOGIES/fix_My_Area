@@ -1,48 +1,68 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
 export default function SuccessPage() {
-  const router = useRouter();
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center p-4">
-      
-      <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md text-center">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
+        <Card className="p-8 text-center">
+          {/* Success Icon */}
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
 
-        {/* Success Icon */}
-        <div className="text-5xl mb-4">✅</div>
+          {/* Title */}
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Issue Submitted Successfully!
+          </h1>
 
-        {/* Title */}
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
-          Issue Submitted!
-        </h1>
+          {/* Message */}
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            Thank you for helping improve your community. Your issue report has been submitted
+            and will be reviewed by the relevant authorities within 24-48 hours.
+          </p>
 
-        {/* Message */}
-        <p className="text-gray-600 mb-6">
-          Your issue has been successfully reported.  
-          Authorities will review it soon.
-        </p>
+          {/* What happens next */}
+          <div className="bg-blue-50 rounded-lg p-4 mb-6 text-left">
+            <h3 className="font-semibold text-blue-900 mb-2">What happens next?</h3>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Your issue will be reviewed by local authorities</li>
+              <li>• Status updates will be posted as work progresses</li>
+              <li>• Community members can vote and comment on your issue</li>
+              <li>• You'll receive notifications about updates</li>
+            </ul>
+          </div>
 
-        {/* Buttons */}
-        <div className="space-y-3">
-          <button
-            onClick={() => router.push("/raise-issue")}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-          >
-            ➕ Raise Another Issue
-          </button>
+          {/* Action Buttons */}
+          <div className="space-y-3">
+            <Link href="/issues" className="block">
+              <Button className="w-full">
+                📊 Track Your Issue
+              </Button>
+            </Link>
 
-          <button
-            onClick={() => router.push("/")}
-            className="w-full border py-2 rounded-lg hover:bg-gray-100"
-          >
-            🏠 Go to Home
-          </button>
-        </div>
+            <Link href="/raise-issue" className="block">
+              <Button variant="secondary" className="w-full">
+                ➕ Report Another Issue
+              </Button>
+            </Link>
 
+            <Link href="/" className="block">
+              <Button variant="secondary" className="w-full">
+                🏠 Return to Home
+              </Button>
+            </Link>
+          </div>
+
+          {/* Help Text */}
+          <p className="text-xs text-gray-500 mt-6">
+            Issue ID will be sent to your email. Check your spam folder if you don't see it.
+          </p>
+        </Card>
       </div>
-
     </div>
   );
 }
