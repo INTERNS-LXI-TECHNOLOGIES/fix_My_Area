@@ -89,7 +89,7 @@ public ResponseEntity<Issue> createIssue(
 
     issue.setIssueCategory(category);
 
-    //  Location
+    //  Location 
     Location location = new Location();
     location.setLatitude(latitude);
     location.setLongitude(longitude);
@@ -106,5 +106,20 @@ public ResponseEntity<Issue> createIssue(
     }
                                                                                 
     return ResponseEntity.ok(service.save(issue));
+}
+
+   @GetMapping("/{id}/image")
+public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+
+    byte[] image = service.getIssueImage(id);
+
+    if (image == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity
+            .ok()
+            .header("Content-Type", "image/jpeg") // or detect dynamically
+            .body(image);
 }
 }

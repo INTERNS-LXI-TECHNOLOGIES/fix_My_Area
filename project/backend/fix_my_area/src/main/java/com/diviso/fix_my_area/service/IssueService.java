@@ -28,6 +28,13 @@ public class IssueService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+      public byte[] getIssueImage(Long id) {
+    Issue issue = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Issue not found"));
+
+    return issue.getPhoto();
+}
 }
 
 
