@@ -24,9 +24,8 @@ public class Issue {
     private String title;
     @Lob
     private String description;
-    @Lob
-    @Column(name = "photo", columnDefinition = "LONGBLOB")
-    private byte[] photo;
+    private String photoUrls;
+    private String videoUrl;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
@@ -36,6 +35,8 @@ public class Issue {
     private IssueStatus issueStatus;
     @Enumerated(EnumType.STRING)
     private PriorityLevel priorityLevel;
+    @Enumerated(EnumType.STRING)
+private IssueStatus status;
     private Boolean isDeleted;
     private Instant createdAt;
     private Instant updatedAt;
@@ -58,15 +59,19 @@ public class Issue {
     private IssueCategory issueCategory;
     @ManyToOne
     private Authority assignedAuthority;
-
-  
     @Version
     private Long version;
 
 
- @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
- private List<IssueComment> issueComments;
-  
+
+
+
+    @OneToMany(mappedBy = "issue", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("issue") // Prevents infinite recursion in JSON
+    private List<IssueComment> issueComments;
+
+
+
+    
 
 }
-
