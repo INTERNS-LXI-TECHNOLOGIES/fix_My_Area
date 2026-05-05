@@ -165,7 +165,7 @@
 
        function ActionButtons({issueId}: any) {
 
-     // മാറ്റം വരുത്തേണ്ട ഭാഗം: ഫംഗ്‌ഷന് മുന്നിൽ 'async' എന്ന് ചേർക്കുക
+
      async function handleSupport() {
        try {
          const response = await fetch('http://localhost:8080/api/issuevotes', {
