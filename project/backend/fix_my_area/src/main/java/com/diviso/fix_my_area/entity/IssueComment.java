@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import java.time.Instant;
 import java.time.LocalDate;
 import com.diviso.fix_my_area.enumeration.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "issuecomment")
@@ -26,13 +27,20 @@ public class IssueComment {
     private Instant createdAt;
  
     // This field name "issue" MUST match the mappedBy = "issue" in Issue.java
-    @ManyToOne
-    @JoinColumn(name = "issue_id")
-    private Issue issue;
 
-    @ManyToOne
-    private UserProfile userProfile;
-    @ManyToOne
+
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "issue_id")
+ @JsonIgnoreProperties("issueComments")  // ✅ FIXED
+ private Issue issue;
+
+
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "user_profile_id") // Matches your DB column name
+ @JsonIgnoreProperties("issueComments") 
+ private UserProfile userProfile;
+
+   @ManyToOne
     private Authority authority;
     @ManyToOne
     private IssueComment parentComment;

@@ -1,11 +1,12 @@
 package com.diviso.fix_my_area.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.Instant;
-import com.diviso.fix_my_area.enumeration.CitizenStatus;
+import java.time.LocalDate;
+import com.diviso.fix_my_area.enumeration.*;
 
 @Entity
 @Table(name = "user_profile")
@@ -24,19 +25,14 @@ public class UserProfile {
     private String aadhaarNumber;
     private String email;
     private String profilePhotoUrl;
-
     private Boolean isVerified;
-
     @Enumerated(EnumType.STRING)
     private CitizenStatus citizenStatus;
-
     private Instant createdAt;
     private Instant updatedAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ward_id")
+    @ManyToOne
     private Ward ward;
-
+    
     @Version
     private Long version;
 }

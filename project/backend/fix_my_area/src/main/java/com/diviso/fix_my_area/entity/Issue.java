@@ -1,54 +1,70 @@
 package com.diviso.fix_my_area.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import java.time.Instant;
+import java.time.LocalDate;
+import com.diviso.fix_my_area.enumeration.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
 @Entity
+@Table(name = "issue")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Issue {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private String category;
-    private String distance;
+
     private String title;
-    private String status;
-    private String time;
-    private String authority;
-    private String image;
-    private int support;
-    private int concern;
-    private boolean urgent;
-    private String priority;
+    @Lob
+    private String description;
+    private String photoUrls;
+    private String videoUrl;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private Location location;
+    @Enumerated(EnumType.STRING)
+    private VisibilityLevel visibilityLevel;
+    @Enumerated(EnumType.STRING)
+    private IssueStatus issueStatus;
+    @Enumerated(EnumType.STRING)
+    private PriorityLevel priorityLevel;
+    private Boolean isDeleted;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private Instant resolvedAt;
+    private LocalDate expectedResolutionDate;
+    private Integer voteCount;
+    private Long panchayathId;
+    private Long regionId;
+    private Long districtId;
+    private Long stateId;
+    private Instant assignedAt;
+    @ManyToOne
+    @JsonIgnoreProperties({"issues", "otherRelationalField"})
+    private UserProfile userProfile;
+    @ManyToOne
+    @JsonIgnoreProperties("issues")
+    private Ward ward;
+    @ManyToOne
+    @JsonIgnoreProperties("issues")
+    private IssueCategory issueCategory;
+    @ManyToOne
+    private Authority assignedAuthority;
 
-    // Default Constructor
-    public Issue() {}
+  
+    @Version
+    private Long version;
 
-    // Getters
-    public Long getId() { return id; }
-    public String getCategory() { return category; }
-    public String getDistance() { return distance; }
-    public String getTitle() { return title; }
-    public String getStatus() { return status; }
-    public String getTime() { return time; }
-    public String getAuthority() { return authority; }
-    public String getImage() { return image; }
-    public int getSupport() { return support; }
-    public int getConcern() { return concern; }
-    public boolean isUrgent() { return urgent; }
-    public String getPriority() { return priority; }
 
-    // Setters
-    public void setId(Long id) { this.id = id; }
-    public void setCategory(String category) { this.category = category; }
-    public void setDistance(String distance) { this.distance = distance; }
-    public void setTitle(String title) { this.title = title; }
-    public void setStatus(String status) { this.status = status; }
-    public void setTime(String time) { this.time = time; }
-    public void setAuthority(String authority) { this.authority = authority; }
-    public void setImage(String image) { this.image = image; }
-    public void setSupport(int support) { this.support = support; }
-    public void setConcern(int concern) { this.concern = concern; }
-    public void setUrgent(boolean urgent) { this.urgent = urgent; }
-    public void setPriority(String priority) { this.priority = priority; }
+ @OneToMany(mappedBy = "issue", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+ private List<IssueComment> issueComments;
+  
+
 }
