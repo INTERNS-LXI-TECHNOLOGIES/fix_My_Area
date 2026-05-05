@@ -1,12 +1,18 @@
 import CivicFeed from '../CivicFeed';
 
-import { IssueControllerApi } from '../../../src/api/generated';
+import { IssueControllerApi, Configuration } from '../../../src/api/generated';
 
-const api = new IssueControllerApi();
+const api = new IssueControllerApi(new Configuration({ basePath: "http://127.0.0.1:8080" }));
 
-export default async function Page() {
+export const dynamic = 'force-dynamic';
+
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   try {
-    const issue = await api.getById8({ id: 1 });
+    const resolvedParams = await params;
+    const issueId = parseInt(resolvedParams.id, 10);
+    const res = await fetch(`http://127.0.0.1:8080/api/issues/${issueId}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status} ${res.statusText}`);
+    const issue = await res.json();
 
     if (!issue) {
       return <div className="p-10 text-center">No issue found.</div>;
@@ -62,10 +68,15 @@ export default async function Page() {
     });
 
     return <CivicFeed issues={mappedIssues} />;
-  } catch (error) {
+  } catch (error: any) {
+    let msg = error.stack || String(error);
+    if (error.response) {
+      msg = `Status: ${error.response.status} ${error.response.statusText}`;
+    }
+    console.error("PAGE ERROR FETCHING ISSUE:", msg);
     return (
       <div className="p-10 text-center text-red-500">
-        Backend Connection Failed
+        Backend Connection Failed: {msg}
       </div>
     );
   }
