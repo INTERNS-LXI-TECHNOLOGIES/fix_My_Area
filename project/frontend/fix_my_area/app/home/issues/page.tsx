@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   MapPin,
   Search,
@@ -42,8 +43,6 @@ const filters = ["Urgent", "Nearby", "In Progress"];
 
 export default function HomePage() {
   const router = useRouter();
-  const pathname = usePathname();
-
   const [issues, setIssues] = useState<Issue[]>([]);
   const [activeFilter, setActiveFilter] = useState("Urgent");
   const [loading, setLoading] = useState(false);
@@ -91,7 +90,7 @@ export default function HomePage() {
         const data: Issue[] = await res.json();
         setIssues(data);
         
-        const initialReactions: Record<string, any> = {};
+        const initialReactions: Record<string, { support: number; concern: number; urgentCount: number; voted: Record<string, boolean> }> = {};
         data.forEach(issue => {
           initialReactions[issue.id.toString()] = { 
             support: issue.support, 
@@ -295,9 +294,12 @@ export default function HomePage() {
                       </button>
                     </div>
 
-                    <button className="w-full mt-4 py-3.5 bg-[#1a3254] hover:bg-[#13263f] dark:hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all active:scale-[0.985]">
+                    <Link 
+                      href={`/issue-details-view/${issue.id}`}
+                      className="block text-center w-full mt-4 py-3.5 bg-[#1a3254] hover:bg-[#13263f] dark:hover:bg-blue-700 text-white font-semibold rounded-2xl transition-all active:scale-[0.985]"
+                    >
                       View Details →
-                    </button>
+                    </Link>
                   </div>
                 </div>
               );
@@ -319,7 +321,7 @@ export default function HomePage() {
             </button>
 
             <button 
-              onClick={() => router.push("/issues/new")}
+              onClick={() => router.push("/raise-issue")}
               className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-[#1a3254] hover:bg-blue-700 rounded-full flex items-center justify-center shadow-xl active:scale-95 transition-all border-4 border-white dark:border-gray-900"
             >
               <Plus size={34} color="white" />
