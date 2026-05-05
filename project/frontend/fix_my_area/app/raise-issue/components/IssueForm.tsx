@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const LocationPicker = dynamic(() => import("./LocationPicker"), {
   ssr: false,
-});
+}); 
 
 type Category = {
   id: string;
