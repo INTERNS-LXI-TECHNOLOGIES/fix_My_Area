@@ -9,12 +9,14 @@ import java.time.LocalDate;
 import com.diviso.fix_my_area.enumeration.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "issue")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Issue {
 
     @Id

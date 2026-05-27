@@ -200,8 +200,8 @@ return(
 
               <button className="bg-orange-500 text-white px-3 py-1 rounded text-xs hover:bg-orange-600">Raise Concern</button>
               <button className="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600">Add Evidence</button>
-                
-<Link 
+
+<Link
 
   href={`/issue-details-view/make-a-comments/editor?issueId=${issueId}`}
   className="bg-purple-500 text-white px-3 py-1 rounded text-xs hover:bg-purple-600 inline-block text-center"

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "location")
@@ -21,6 +22,7 @@ public class Location {
     private String locationDescription;
 
     @OneToOne(mappedBy = "location")
+    @JsonIgnore
     private Issue issue;
     @Version
     private Long version;

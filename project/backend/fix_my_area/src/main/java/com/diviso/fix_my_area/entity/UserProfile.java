@@ -1,3 +1,4 @@
+
 package com.diviso.fix_my_area.entity;
 
 import jakarta.persistence.*;

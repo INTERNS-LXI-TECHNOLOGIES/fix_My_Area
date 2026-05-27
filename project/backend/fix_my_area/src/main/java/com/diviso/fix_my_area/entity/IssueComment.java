@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import com.diviso.fix_my_area.enumeration.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "issuecomment")
@@ -43,6 +44,7 @@ public class IssueComment {
    @ManyToOne
     private Authority authority;
     @ManyToOne
+    @JsonIgnore
     private IssueComment parentComment;
     @Version
     private Long version;

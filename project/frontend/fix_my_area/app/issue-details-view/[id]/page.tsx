@@ -9,7 +9,9 @@ export default async function Page() {
     const issue = await api.getById8({ id: 1 });
 
     if (!issue) {
+
       return <div className="p-10 text-center">No issue found.</div>;
+
     }
 
     const backendData = [issue];
