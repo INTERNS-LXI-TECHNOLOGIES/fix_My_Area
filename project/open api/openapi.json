@@ -892,8 +892,7 @@
                                 "$ref": "#/components/schemas/IssueComment"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "responses": {
                     "200": {
@@ -1786,10 +1785,11 @@
                 ],
                 "operationId": "create_9",
                 "requestBody": {
+                    "description": "Issue Comment Request",
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/IssueComment"
+                                "$ref": "#/components/schemas/IssueCommentRequest"
                             }
                         }
                     },
@@ -2491,6 +2491,9 @@
                         "type": "string",
                         "format": "date-time"
                     },
+                    "issue": {
+                        "$ref": "#/components/schemas/Issue"
+                    },
                     "userProfile": {
                         "$ref": "#/components/schemas/UserProfile"
                     },
@@ -2642,6 +2645,28 @@
                         "$ref": "#/components/schemas/Authority"
                     },
                     "version": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "IssueCommentRequest": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "isFromAuthority": {
+                        "type": "boolean"
+                    },
+                    "isDeleted": {
+                        "type": "boolean"
+                    },
+                    "issueId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "userProfileId": {
                         "type": "integer",
                         "format": "int64"
                     }
