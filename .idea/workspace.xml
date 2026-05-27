@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ad19916-99ab-4093-b360-b691ceeac310" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/Issue.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/Issue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/IssueComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/IssueComment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/Location.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/backend/fix_my_area/src/main/java/com/diviso/fix_my_area/entity/UserProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/frontend/fix_my_area/app/issue-details-view/CivicFeed.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/project/frontend/fix_my_area/app/issue-details-view/CivicFeed.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/frontend/fix_my_area/app/issue-details-view/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/project/frontend/fix_my_area/app/issue-details-view/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
